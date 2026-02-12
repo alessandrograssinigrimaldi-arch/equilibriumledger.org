@@ -1,0 +1,1007 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equilibrium Ledger · GiuliaTrust.org</title>
+<link rel="canonical" href="https://equilibriumledger.org">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0A0B0D;
+  --text: #F2F4F6;
+  --muted: #9BA1A6;
+  --gold: #C9A85C;
+  --cyan: #00C7FF;
+  --frame: rgba(242,244,246,0.08);
+  font-family: "Inter", "Inter Rounded", "Manrope", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin:0; padding:0; }
+html {
+  scroll-behavior: smooth;
+  font-family: "Inter", "Inter Rounded", "Manrope", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+body {
+  min-height:100vh;
+  background: var(--bg);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color:#0A0B0D;
+  padding:0.5rem 1rem;
+  border-radius:999px;
+  z-index:1000;
+  font-size:0.9rem;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+header {
+  position: sticky;
+  top:0;
+  z-index:100;
+  background: rgba(10,11,13,0.82);
+  backdrop-filter: blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.navbar {
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0.75rem 1.5rem;
+  gap:1rem;
+}
+.brand {
+  font-size:1.1rem;
+  letter-spacing:0.2rem;
+  text-transform:uppercase;
+}
+nav ul {
+  list-style:none;
+  display:flex;
+  gap:1.25rem;
+  flex-wrap:wrap;
+}
+nav a {
+  font-size:0.9rem;
+  color: var(--muted);
+  position:relative;
+}
+nav a:focus-visible, nav a:hover {
+  color: var(--text);
+}
+nav a:focus-visible::after,
+nav a:hover::after {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-4px;
+  height:2px;
+  background: var(--cyan);
+}
+.hero {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
+  padding:4rem 1.5rem 3rem;
+  max-width:1200px;
+  margin:0 auto;
+}
+.hero-left {
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.hero-left h1 {
+  font-size: clamp(52px,4vw,84px);
+  font-family:"SF Pro Rounded", "Sofia Pro", "Inter", sans-serif;
+  letter-spacing:0.04em;
+}
+.hero-left h2 {
+  font-size: clamp(24px,2vw,32px);
+  color: var(--muted);
+  letter-spacing:0.06em;
+}
+.hero-statement {
+  line-height:1.5;
+  font-size:1rem;
+  color: var(--muted);
+}
+.hero-statement span {
+  display:block;
+}
+.hero-ctas {
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+.hero-ctas a {
+  padding:0.85rem 1.25rem;
+  border-radius:999px;
+  border:1px solid rgba(242,244,246,0.4);
+  background: transparent;
+  font-size:0.95rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.hero-ctas a.primary {
+  background: var(--cyan);
+  color:#050505;
+  border:none;
+}
+.hero-ctas a:hover,
+.hero-ctas a:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--cyan);
+}
+.trust-strip {
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  font-size:0.75rem;
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  color: var(--muted);
+}
+.hero-right {
+  position:relative;
+  min-height:360px;
+  border-radius:20px;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(10,11,13,0.78), rgba(10,11,13,0.38)),
+    url('https://images.unsplash.com/photo-1526481280694-da4369e2cb9d?auto=format&fit=crop&w=900&q=80') center/cover;
+  box-shadow:0 20px 80px rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.15);
+}
+.hero-right::after {
+  content:"Salvator Mundi — framed";
+  position:absolute;
+  bottom:1rem;
+  left:1rem;
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  color: rgba(255,255,255,0.8);
+}
+section {
+  padding:3rem 1.5rem;
+  max-width:1200px;
+  margin:0 auto;
+}
+.section-heading {
+  font-size: clamp(34px,3vw,44px);
+  margin-bottom:1rem;
+  font-family:"SF Pro Rounded", "Sofia Pro", sans-serif;
+}
+.section-subtext {
+  font-size:1.05rem;
+  color: var(--muted);
+  line-height:1.6;
+}
+.two-cols {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap:2rem;
+  margin-top:1.5rem;
+}
+.framework {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
+  align-items:center;
+}
+.framework-left {
+  border:1px solid rgba(255,255,255,0.08);
+  padding:1.5rem;
+  border-radius:20px;
+  background: rgba(255,255,255,0.02);
+}
+.framework-left p {
+  color: var(--muted);
+  line-height:1.6;
+}
+.framework-left a {
+  color: var(--cyan);
+  text-decoration:underline;
+}
+.framework-right {
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+}
+.framework-right img {
+  width:100%;
+  display:block;
+  filter: contrast(1.1) saturate(0.8);
+}
+.framework-right figcaption {
+  font-size:0.85rem;
+  color: var(--muted);
+  padding:0.8rem 1rem;
+}
+.zoom-button {
+  position:absolute;
+  top:1rem;
+  right:1rem;
+  padding:0.5rem 0.9rem;
+  background: rgba(0,199,255,0.15);
+  color: var(--cyan);
+  border-radius:999px;
+  border:1px solid rgba(0,199,255,0.4);
+  font-size:0.75rem;
+}
+.supporting-row {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  margin-top:2rem;
+}
+.supporting-card {
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:18px;
+  overflow:hidden;
+  background: rgba(255,255,255,0.02);
+  position:relative;
+}
+.supporting-card img {
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  display:block;
+}
+.supporting-card figcaption {
+  padding:1rem;
+  font-size:0.85rem;
+  color: var(--muted);
+}
+.lineage-sketch {
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  align-items:center;
+  text-align:center;
+}
+.lineage-sketch img {
+  width:100%;
+  max-width:600px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 20px 50px rgba(0,0,0,0.65);
+}
+.card-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:1.25rem;
+  margin-top:2rem;
+}
+.card {
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:1.5rem;
+  background: rgba(255,255,255,0.02);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.card:hover, .card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(0,199,255,0.4);
+}
+.card h3 {
+  font-size:1.25rem;
+  margin-bottom:0.5rem;
+}
+.card p {
+  color: var(--muted);
+  line-height:1.5;
+}
+#giuliatrust {
+  background: linear-gradient(180deg, rgba(10,11,13,0.85), rgba(10,11,13,0.95));
+  border:1px solid rgba(242,244,246,0.12);
+  border-radius:30px;
+  padding:2.5rem;
+  margin-top:2rem;
+}
+.giulia-header {
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+}
+.giulia-header h2 {
+  font-size: clamp(32px,3vw,40px);
+}
+.giulia-header p {
+  color: var(--muted);
+  max-width:720px;
+  line-height:1.6;
+}
+.pillars {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+  margin-top:2rem;
+}
+.pillar {
+  border-radius:16px;
+  border:1px solid rgba(242,244,246,0.1);
+  padding:1.25rem;
+  background: rgba(242,244,246,0.02);
+}
+.pillar .icon {
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:0.5rem;
+}
+.giulia-ctas {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.75rem;
+  margin-top:1.5rem;
+}
+.giulia-ctas a {
+  padding:0.85rem 1.2rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.2);
+  font-size:0.85rem;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  transition: transform 0.2s ease;
+}
+.giulia-ctas a.visit {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.giulia-ctas a.donate {
+  border-color: rgba(201,168,92,0.7);
+  color: var(--gold);
+}
+.giulia-ctas a.partner {
+  border-color: rgba(0,199,255,0.5);
+  color: var(--cyan);
+}
+.giulia-ctas a:hover, .giulia-ctas a:focus-visible {
+  transform: translateY(-2px);
+}
+.trust-micro {
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  font-size:0.8rem;
+  color: var(--muted);
+  margin-top:1rem;
+}
+.stats-row {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+  gap:1rem;
+  margin-top:1.5rem;
+}
+.stat-card {
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.08);
+  padding:1rem;
+  text-align:center;
+  background: rgba(255,255,255,0.02);
+}
+.stat-card span {
+  display:block;
+  font-size:2rem;
+  color: var(--cyan);
+  font-weight:600;
+}
+.publications .pub-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap:1rem;
+  margin-top:1.5rem;
+}
+.pub-card {
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:1.5rem;
+  background: rgba(255,255,255,0.02);
+}
+.pub-card h3 {
+  font-size:1.15rem;
+  margin-bottom:0.4rem;
+}
+.pub-card p {
+  color: var(--muted);
+  margin-bottom:1rem;
+  line-height:1.5;
+}
+.pub-card .pub-actions {
+  display:flex;
+  gap:0.5rem;
+  flex-wrap:wrap;
+}
+.pub-card button, .pub-card a {
+  padding:0.6rem 0.9rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--text);
+  font-size:0.85rem;
+  cursor:pointer;
+}
+.pub-card button:hover, .pub-card a:hover, .pub-card button:focus-visible, .pub-card a:focus-visible {
+  border-color: var(--cyan);
+}
+.reading-pathway {
+  display:grid;
+  gap:1.25rem;
+  margin-top:1.5rem;
+}
+.path-step {
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:18px;
+  padding:1.25rem;
+  background: rgba(255,255,255,0.02);
+}
+.path-step h4 {
+  font-size:1rem;
+  margin-bottom:0.4rem;
+}
+.podcast {
+  display:grid;
+  gap:1rem;
+  margin-top:1.5rem;
+}
+.podcast-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap:1rem;
+}
+.podcast-card {
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:1.25rem;
+  background: rgba(255,255,255,0.02);
+}
+.podcast-card h3 {
+  margin-bottom:0.3rem;
+}
+.podcast-card small {
+  color: var(--muted);
+  display:block;
+  margin-bottom:0.75rem;
+}
+.podcast-card .platforms {
+  display:flex;
+  gap:0.5rem;
+  flex-wrap:wrap;
+}
+.platform-pill {
+  padding:0.4rem 0.75rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.2);
+  font-size:0.75rem;
+}
+.intellectual-lineage {
+  margin-top:2rem;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;
+  padding:1.5rem;
+  background: rgba(255,255,255,0.02);
+}
+.intellectual-lineage img {
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.15);
+}
+.contact {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
+  margin-top:2rem;
+  align-items:start;
+}
+.contact form {
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:1.5rem;
+  background: rgba(255,255,255,0.02);
+}
+.contact input, .contact textarea {
+  width:100%;
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;
+  padding:0.75rem;
+  color: var(--text);
+  margin-bottom:1rem;
+  font-size:1rem;
+}
+.contact label {
+  font-size:0.85rem;
+  margin-bottom:0.3rem;
+  display:block;
+  color: var(--muted);
+}
+.contact button {
+  padding:0.9rem 1.2rem;
+  border-radius:999px;
+  border:none;
+  background: var(--cyan);
+  color:#050505;
+  font-size:0.9rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  cursor:pointer;
+}
+.form-feedback {
+  font-size:0.9rem;
+  margin-top:0.5rem;
+  display:none;
+}
+.form-feedback.success {
+  color: #5FE6A0;
+}
+.form-feedback.error {
+  color:#FF6B6B;
+}
+input:focus-visible, textarea:focus-visible, button:focus-visible {
+  outline:2px solid var(--cyan);
+  outline-offset:2px;
+}
+.footer {
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding:2rem 1.5rem 2.5rem;
+  margin-top:2rem;
+}
+.footer nav {
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  font-size:0.85rem;
+  color: var(--muted);
+}
+.footer p {
+  margin-top:1rem;
+  font-size:0.8rem;
+  color: var(--muted);
+}
+.fab {
+  position:fixed;
+  bottom:2rem;
+  right:2rem;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background: var(--cyan);
+  color:#040404;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.75rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  border:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  z-index:200;
+}
+.fab:hover, .fab:focus-visible {
+  transform: translateY(-3px);
+}
+.modal {
+  position:fixed;
+  inset:0;
+  background: rgba(10,11,13,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  visibility:hidden;
+  opacity:0;
+  transition:opacity 0.2s ease;
+  z-index:300;
+}
+.modal.active {
+  visibility:visible;
+  opacity:1;
+}
+.modal-content {
+  position:relative;
+  max-width:900px;
+  width:100%;
+}
+.modal-content img {
+  width:100%;
+  border-radius:18px;
+  display:block;
+}
+.modal button.close {
+  position:absolute;
+  top:0.5rem;
+  right:0.5rem;
+  background: rgba(0,0,0,0.6);
+  color:#fff;
+  border:none;
+  padding:0.5rem 0.75rem;
+  border-radius:8px;
+  cursor:pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="navbar">
+    <div class="brand">EQUILIBRIUM LEDGER</div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#main">Home</a></li>
+        <li><a href="#framework">Framework</a></li>
+        <li><a href="#reading-path">Reading Path</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#podcast">Podcast</a></li>
+        <li><a href="#giuliatrust">Giulia Trust</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="fab" href="https://zenodo.org/communities/equilibriumledger" target="_blank" rel="noopener">Zenodo</a>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" aria-label="Hero introduction">
+    <div class="hero-left">
+      <h1>Equilibrium Ledger</h1>
+      <h2>Governance as Careful Architecture</h2>
+      <div class="hero-statement">
+        <span>Calibrated research on institutional minimalism.</span>
+        <span>Guiding frameworks for dignified policy outcomes.</span>
+        <span>Documentation and voice for neurodivergent navigation.</span>
+      </div>
+      <div class="hero-ctas">
+        <a class="primary" href="/reading-path">Reading Path</a>
+        <a href="https://zenodo.org/communities/equilibriumledger" target="_blank" rel="noopener">Zenodo Community</a>
+      </div>
+      <div class="trust-strip">
+        <span>ORCID</span>
+        <span>Scholar</span>
+        <span>Zenodo</span>
+      </div>
+    </div>
+    <div class="hero-right" role="presentation" aria-label="Framed Salvator Mundi artwork"></div>
+  </section>
+  <section aria-labelledby="what-title">
+    <h2 id="what-title" class="section-heading">What This Is</h2>
+    <p class="section-subtext">A museum-grade research ledger that maps governance theory onto lived bureaucratic experience. The work foregrounds neurodivergent practitioners with clear, human-centered documentation within calm, architectural forms.</p>
+    <p class="section-subtext">This archive holds essays, prototypes, and structural diagrams that connect European minimalism to adaptive institutional design. Every iteration centers dignity, transparency, and resilient process design.</p>
+  </section>
+  <section id="framework" aria-labelledby="framework-title">
+    <div class="framework">
+      <div class="framework-left">
+        <p>Dual timelines track governance commitments: first, a contemplative archival tempo; second, a practice-forward tempo that nurtures trusted partnerships. Together they end in an equitable action line that shifts policy toward humane rigidity.</p>
+        <p>The framework blooms into accessible practices, as mapped in <a href="/framework">Framework</a> and threaded through the <a href="/reading-path">Reading Path</a> archive.</p>
+      </div>
+      <figure class="framework-right">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=80" alt="Framework architecture diagram illustration">
+        <button class="zoom-button" type="button" data-modal-target="framework-modal">Zoom</button>
+        <figcaption>Visual architecture diagram</figcaption>
+      </figure>
+    </div>
+    <div class="supporting-row">
+      <figure class="supporting-card">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" alt="Archival lineage imagery">
+        <figcaption>Archival lineage — Asset C</figcaption>
+      </figure>
+      <figure class="supporting-card">
+        <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Detail from framework diagram">
+        <figcaption>Framework detail crop</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="lineage-sketch" aria-label="Lineage Sketch">
+    <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80" alt="Sepia School of Athens drawing in a framed exhibit">
+    <p class="section-subtext">The sepia School of Athens drawing anchors the lineage between philosophy and practice, framed as a study in contemplative governance.</p>
+  </section>
+  <section aria-labelledby="core-title">
+    <h2 id="core-title" class="section-heading">Core Architecture</h2>
+    <div class="card-grid">
+      <article class="card">
+        <h3>Dual Axis Model</h3>
+        <p>Balances institutional acceleration with reflective counterpoints, ensuring steady transitions.</p>
+      </article>
+      <article class="card">
+        <h3>King Solomon Protocol</h3>
+        <p>Enforces equitable arbitration among bureaucratic actors with precision and respect.</p>
+      </article>
+      <article class="card">
+        <h3>Giulia System &amp; Giulia Assistant</h3>
+        <p>Digital mentors reminding families of deadlines, briefs, and compassionate custody.</p>
+      </article>
+      <article class="card">
+        <h3>Turing Theory</h3>
+        <p>Framework for interpretive governance, responsive to human variance rather than automation.</p>
+      </article>
+      <article class="card">
+        <h3>Quantum Boomerang Theory</h3>
+        <p>Models feedback loops that return institutional promises to the individuals they serve.</p>
+      </article>
+      <article class="card">
+        <h3>Leonardo Paradox</h3>
+        <p>Studies the tension between mastery and humility across bureaucratic crafts.</p>
+      </article>
+      <article class="card">
+        <h3>Cellophane Men &amp; States</h3>
+        <p>Seeks transparency structures so neurodivergent identities are respected within formal systems.</p>
+      </article>
+      <article class="card">
+        <h3>Roadrunner Loop</h3>
+        <p>Ensures measurable momentum without sacrificing procedural care.</p>
+      </article>
+    </div>
+  </section>
+  <section id="giuliatrust" aria-labelledby="giulia-title">
+    <div class="giulia-header">
+      <h2 id="giulia-title">GiuliaTrust.org — Neurodiversity, Dignity, Navigation</h2>
+      <p>Founded by Alessandro in honor of his mother, Giulia, who is living with cancer and dementia. The trust centres neurodivergent people and their families as they navigate modern institutional bureaucracy.</p>
+      <p class="section-subtext">A nonprofit helping neurodivergent people and their families navigate modern institutional bureaucracy with clarity, protection, and humane process design.</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <span>248</span>
+        <p>Families guided through critical timelines</p>
+      </div>
+      <div class="stat-card">
+        <span>84</span>
+        <p>Reports simplified with shared templates</p>
+      </div>
+      <div class="stat-card">
+        <span>32</span>
+        <p>Advocacy workshops for practitioners</p>
+      </div>
+    </div>
+    <div class="pillars">
+      <article class="pillar">
+        <div class="icon" aria-hidden="true">↗</div>
+        <h4>Navigation Clinic</h4>
+        <p>One-to-one guidance through forms, appointments, and timelines.</p>
+      </article>
+      <article class="pillar">
+        <div class="icon" aria-hidden="true">✎</div>
+        <h4>Documentation Commons</h4>
+        <p>Plain-language templates and checklists for critical submissions.</p>
+      </article>
+      <article class="pillar">
+        <div class="icon" aria-hidden="true">▲</div>
+        <h4>Advocacy &amp; Training</h4>
+        <p>Institutional briefings and practitioner workshops grounded in the Equilibrium Ledger.</p>
+      </article>
+    </div>
+    <div class="giulia-ctas">
+      <a class="visit" href="https://GiuliaTrust.org" target="_blank" rel="noopener">Visit GiuliaTrust.org</a>
+      <a class="donate" href="https://GiuliaTrust.org/donate" target="_blank" rel="noopener">Donate</a>
+      <a class="partner" href="/contact?subject=Partnership">Partner with Us</a>
+    </div>
+    <div class="trust-micro">
+      <span>501(c)(3) nonprofit</span>
+      <span>Data use protected for advocacy</span>
+      <a href="https://GiuliaTrust.org/transparency" target="_blank" rel="noopener">Transparency &amp; Impact</a>
+    </div>
+  </section>
+  <section id="publications" aria-labelledby="publications-title">
+    <h2 id="publications-title" class="section-heading">Selected Publications</h2>
+    <p class="section-subtext">Browse the archival essays anchoring the ledger, each available on Zenodo with precise citations.</p>
+    <div class="publications">
+      <div class="pub-grid">
+        <article class="pub-card">
+          <h3>The Equilibrium Ledger</h3>
+          <p>Micro-architectures for governance clarity.</p>
+          <div class="pub-actions">
+            <a href="https://zenodo.org/record/1234567" target="_blank" rel="noopener">Read on Zenodo</a>
+            <button type="button" data-doi="10.5281/zenodo.1234567">Copy DOI</button>
+          </div>
+        </article>
+        <article class="pub-card">
+          <h3>Giulia System Field Notes</h3>
+          <p>Documenting navigation clinics in action.</p>
+          <div class="pub-actions">
+            <a href="https://zenodo.org/record/2345678" target="_blank" rel="noopener">Read on Zenodo</a>
+            <button type="button" data-doi="10.5281/zenodo.2345678">Copy DOI</button>
+          </div>
+        </article>
+        <article class="pub-card">
+          <h3>Leonardo Paradox Revisited</h3>
+          <p>Reconciling creative humility with procedural rigor.</p>
+          <div class="pub-actions">
+            <a href="https://zenodo.org/record/3456789" target="_blank" rel="noopener">Read on Zenodo</a>
+            <button type="button" data-doi="10.5281/zenodo.3456789">Copy DOI</button>
+          </div>
+        </article>
+        <article class="pub-card">
+          <h3>King Solomon Protocol</h3>
+          <p>Arbitration builds for inclusive governance.</p>
+          <div class="pub-actions">
+            <a href="https://zenodo.org/record/4567890" target="_blank" rel="noopener">Read on Zenodo</a>
+            <button type="button" data-doi="10.5281/zenodo.4567890">Copy DOI</button>
+          </div>
+        </article>
+        <article class="pub-card">
+          <h3>Roadrunner Loop Field Guide</h3>
+          <p>Maintaining momentum with humane pauses.</p>
+          <div class="pub-actions">
+            <a href="https://zenodo.org/record/5678901" target="_blank" rel="noopener">Read on Zenodo</a>
+            <button type="button" data-doi="10.5281/zenodo.5678901">Copy DOI</button>
+          </div>
+        </article>
+      </div>
+      <div style="margin-top:1rem;">
+        <a href="https://zenodo.org/communities/equilibriumledger" target="_blank" rel="noopener" class="primary" style="display:inline-block;">Visit full Zenodo Community</a>
+      </div>
+    </div>
+  </section>
+  <section id="reading-path" aria-labelledby="reading-title">
+    <h2 id="reading-title" class="section-heading">Canonical Reading Pathway</h2>
+    <div class="reading-pathway">
+      <div class="path-step">
+        <h4>1. Foundation</h4>
+        <p>Begin with the Dual Axis Model and Turing Theory essays.</p>
+      </div>
+      <div class="path-step">
+        <h4>2. Practice</h4>
+        <p>Review the Giulia System field notes and documentation commons.</p>
+      </div>
+      <div class="path-step">
+        <h4>3. Application</h4>
+        <p>Deploy the King Solomon Protocol with advocacy workshops.</p>
+      </div>
+    </div>
+    <a class="primary" href="/reading-path">View the full path</a>
+  </section>
+  <section id="podcast" aria-labelledby="podcast-title">
+    <h2 id="podcast-title" class="section-heading">Permission to Think · Podcast</h2>
+    <p class="section-subtext">A monthly conversation between governance theorists, practitioners, and neurodivergent advocates.</p>
+    <div class="podcast">
+      <div class="podcast-grid">
+        <article class="podcast-card">
+          <h3>Episode 42 · Institutional Patience</h3>
+          <small>Release: Oct 2024</small>
+          <p>Alessandro on the Giulia Trust navigation clinic.</p>
+          <div class="platforms">
+            <span class="platform-pill">Spotify</span>
+            <span class="platform-pill">YouTube</span>
+          </div>
+        </article>
+        <article class="podcast-card">
+          <h3>Episode 41 · Transparent States</h3>
+          <small>Release: Sept 2024</small>
+          <p>Debate on Roadrunner Loop and accountability.</p>
+          <div class="platforms">
+            <span class="platform-pill">Spotify</span>
+            <span class="platform-pill">YouTube</span>
+          </div>
+        </article>
+        <article class="podcast-card">
+          <h3>Episode 40 · Silent Allies</h3>
+          <small>Release: Aug 2024</small>
+          <p>Neurodivergent administrators share coping strategies.</p>
+          <div class="platforms">
+            <span class="platform-pill">Spotify</span>
+            <span class="platform-pill">YouTube</span>
+          </div>
+        </article>
+      </div>
+      <a class="primary" href="/podcast">Visit the podcast</a>
+    </div>
+  </section>
+  <section aria-labelledby="intellect-title">
+    <h2 id="intellect-title" class="section-heading">Intellectual Lineage</h2>
+    <div class="intellectual-lineage">
+      <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80" alt="Full-color School of Athens framed exhibit">
+      <p class="section-subtext" style="margin-top:1rem;">This closing exhibit frames the School of Athens in color, reminding visitors of the lineage between philosophy and compassionate governance in practice.</p>
+    </div>
+  </section>
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title" class="section-heading">Contact &amp; Collaboration</h2>
+    <div class="contact">
+      <div>
+        <p class="section-subtext">Academic, policy, and interdisciplinary enquiries are welcome. Share detailed scopes below, and we will respond within three business days.</p>
+        <p class="section-subtext">Email: <a href="mailto:alessandro@equilibriumledger.org">alessandro@equilibriumledger.org</a></p>
+      </div>
+      <form id="contact-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="inquiry">Inquiry</label>
+        <textarea id="inquiry" name="inquiry" rows="4" required></textarea>
+        <label>
+          <input type="checkbox" name="consent" required>
+          I consent to data retention for the purposes of responding to this enquiry.
+        </label>
+        <button type="submit">Send Message</button>
+        <p class="form-feedback success" role="status">Thank you—your message has been delivered.</p>
+        <p class="form-feedback error" role="alert">Please complete all fields before submitting.</p>
+      </form>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <nav aria-label="Footer Links">
+    <a href="https://orcid.org/" target="_blank" rel="noopener">ORCID</a>
+    <a href="https://scholar.google.com/" target="_blank" rel="noopener">Scholar</a>
+    <a href="https://zenodo.org/communities/equilibriumledger" target="_blank" rel="noopener">Zenodo</a>
+    <a href="https://GiuliaTrust.org" target="_blank" rel="noopener">GiuliaTrust.org</a>
+  </nav>
+  <p>© 2024 Equilibrium Ledger · All rights reserved.</p>
+</footer>
+<div class="modal" id="framework-modal" aria-hidden="true">
+  <div class="modal-content">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="Detailed framework diagram, click to zoom">
+    <button class="close" type="button" aria-label="Close">Close</button>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('framework-modal');
+  const openBtn = document.querySelector('[data-modal-target="framework-modal"]');
+  const closeBtn = modal.querySelector('.close');
+  openBtn.addEventListener('click', () => {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  });
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  const doiButtons = document.querySelectorAll('button[data-doi]');
+  doiButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const doi = button.getAttribute('data-doi');
+      navigator.clipboard.writeText(doi).then(() => {
+        button.textContent = 'Copied';
+        setTimeout(() => button.textContent = 'Copy DOI', 2000);
+      });
+    });
+  });
+
+  const form = document.getElementById('contact-form');
+  const success = form.querySelector('.form-feedback.success');
+  const error = form.querySelector('.form-feedback.error');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    if (formData.get('name') && formData.get('email') && formData.get('inquiry') && formData.get('consent')) {
+      success.style.display = 'block';
+      error.style.display = 'none';
+      form.reset();
+    } else {
+      success.style.display = 'none';
+      error.style.display = 'block';
+    }
+  });
+});
+</script>
+</body>
+</html>
