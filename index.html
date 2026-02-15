@@ -136,6 +136,15 @@ img { max-width: 100%; display: block; }
 .episode-tile:hover { border-color: var(--cyan); }
 .episode-tile img { width: 48px; height: 48px; border-radius: 8px; }
 
+/* --- MANUSCRIPTS GRID --- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+}
+.manuscript-card { display: flex; gap: 16px; align-items: flex-start; }
+.manuscript-cover { width: 120px; border-radius: 14px; }
+
 /* --- FOOTER --- */
 .footer { padding: 40px 0; color: var(--muted); font-size: 0.9rem; }
 .footer a { color: var(--text); }
@@ -183,12 +192,47 @@ img { max-width: 100%; display: block; }
   <div class="container">
     <div class="panel" style="padding:40px;">
       <div class="hero-grid">
-        <img src="framework1_clean.jpg" style="border-radius:18px;" alt="Framework">
+        <img src="Framework1.jpg" style="border-radius:18px;" alt="Framework">
         <div>
           <h2 style="font-size:2rem; margin-top:0;">The Framework</h2>
           <p class="lead">The Equilibrium Ledger runs on two axes: a procedural axis charting governmental velocity, and a temporal axis registering the accrued depth of knowledge.</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="manuscripts" class="section">
+  <div class="container">
+    <div class="cards-grid">
+      
+      <article class="card manuscript-card">
+        <img src="voices_cover.png" class="manuscript-cover" alt="Voices Cover">
+        <div>
+          <h3>Voices Against Oblivion</h3>
+          <p style="font-size:0.9rem; color:var(--muted);">A Dantean journey through Naples and the great figures of European history.</p>
+          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
+        </div>
+      </article>
+
+      <article class="card manuscript-card">
+        <img src="Audhd_cover.png" class="manuscript-cover" alt="AuDHD Cover">
+        <div>
+          <h3>I Am Not Crazy, I Have Just Got ADHD</h3>
+          <p style="font-size:0.9rem; color:var(--muted);">A personal yet structurally analytical memoir exploring neurodivergence.</p>
+          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
+        </div>
+      </article>
+
+      <article class="card manuscript-card">
+        <img src="experiment_cover.png" class="manuscript-cover" alt="Experiment Cover">
+        <div>
+          <h3>You Were The Experiment</h3>
+          <p style="font-size:0.9rem; color:var(--muted);">Speculative fiction on memory, loops, and emotional autonomy.</p>
+          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
