@@ -18,166 +18,180 @@
 *, *::before, *::after { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
+  margin:0; background:var(--bg); color:var(--text);
   font-family: ui-rounded, system-ui, -apple-system, sans-serif;
-  line-height:1.6;
+  line-height:1.6; min-height:100vh;
 }
 a { color:var(--cyan); text-decoration:none; }
 img { max-width: 100%; display: block; }
+a:focus-visible, button:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
 
-/* --- NAVIGATION & HERO --- */
-.nav {
+/* --- NAVIGATION --- */
+.site-header {
   position:sticky; top:0; z-index:50;
-  background:rgba(7,9,12,0.85);
-  backdrop-filter: blur(12px);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  padding: 1rem 0;
+  background:rgba(10,11,13,0.85); backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.08); padding:1rem 0;
 }
-.container { max-width:1200px; margin:0 auto; padding:0 22px; }
-.nav-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; }
-.brand { display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:0.05em; }
-.brand-mark {
-  width:40px; height:40px; background:linear-gradient(135deg,var(--gold),var(--cyan));
-  border-radius:10px; display:flex; align-items:center; justify-content:center; color:#000;
+.header-inner {
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:1200px; margin:0 auto; padding:0 1.5rem; flex-wrap: wrap; gap: 1rem;
 }
-.nav-links { display:flex; gap:20px; }
-.nav-links a { color:var(--muted); font-size:0.95rem; }
-.nav-links a:hover { color:var(--text); }
+.brand { display:flex; align-items:center; gap:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem; }
+.brand .logo-mark {
+  width:38px; height:38px; background:linear-gradient(135deg,var(--gold),var(--cyan));
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem; font-weight:700; color:#0A0B0D;
+}
+.nav-links { display:flex; gap:0.5rem; flex-wrap: wrap; }
+.nav-links a {
+  padding:0.45rem 0.75rem; font-size:0.95rem; border-radius:999px;
+  border:1px solid transparent; color: var(--muted);
+}
+.nav-links a:hover { color: var(--text); border-color:rgba(255,255,255,0.2); }
 .pill {
-  padding:8px 16px; border-radius:99px; border:1px solid rgba(255,255,255,0.15);
-  font-size:0.85rem; font-weight:600;
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:0.65rem 1.25rem; border-radius:999px; font-weight:600; font-size:0.85rem;
+  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.04); color:var(--text);
 }
-.pill.accent { border-color:var(--cyan); color:var(--cyan); background:rgba(0,199,255,0.1); }
+.pill.accent { border-color:var(--cyan); color:var(--cyan); background:rgba(0,199,255,0.08); }
+.pill.gold { border-color:var(--gold); color:var(--gold); background:rgba(201,162,74,0.08); }
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:0.65rem 1.25rem; border-radius:12px; font-size:0.9rem; font-weight:600;
+  background:var(--card); border:1px solid rgba(255,255,255,0.1); color:var(--text); cursor:pointer;
+}
+.btn.primary { background:var(--gold); color:#000; border:none; }
+.btn:hover { transform: translateY(-2px); }
 
-/* --- HERO SECTION --- */
-.hero { padding: 60px 0; }
-.hero-grid { display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:center; }
-.h1 { font-size: clamp(32px, 5vw, 64px); line-height:1.1; margin-bottom: 20px; }
+/* --- LAYOUT --- */
+.section { padding: 4rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.container { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
+.panel {
+  border:1px solid rgba(255,255,255,0.10);
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border-radius:var(--radius); box-shadow:0 28px 70px rgba(0,0,0,0.40);
+  padding: 30px;
+}
+.hero-grid { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:40px; align-items:center; }
+.split { display:grid; grid-template-columns: 1.05fr 0.95fr; gap:22px; align-items:center; }
+.split.reverse { grid-template-columns:0.95fr 1.05fr; }
+.grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.25rem; }
+
+/* --- HERO --- */
+.h1 { font-size:clamp(42px,6vw,84px); margin:10px 0; line-height:1.05; }
 .hero-art {
   border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 0 40px rgba(0,199,255,0.15);
 }
 
-/* --- SECTIONS --- */
-.section { padding: 60px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.card {
-  background: var(--card); border: 1px solid rgba(255,255,255,0.08);
-  padding: 24px; border-radius: 20px;
+/* --- CARDS & ARCHITECTURE --- */
+.section-header { max-width:940px; margin-bottom:2rem; }
+.fine-print { text-transform:uppercase; letter-spacing:3px; color:var(--muted); font-size: 0.8rem; }
+.architecture-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; }
+.architecture-card, .publication-card {
+  background:var(--card); border-radius:20px; padding:1.5rem;
+  border:1px solid rgba(255,255,255,0.05); transition:transform 0.2s;
 }
-.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.architecture-card:hover { transform:translateY(-3px); border-color:var(--cyan); }
+.card-icon {
+  width:32px; height:32px; background:linear-gradient(135deg,var(--gold),var(--cyan));
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:0.75rem; color:#000; margin-bottom: 12px;
+}
+.publication-actions { margin-top: 15px; display: flex; gap: 10px; }
 
-/* --- PODCAST SECTION (FIXED) --- */
+/* --- MANUSCRIPTS --- */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.manuscript-card { display: flex; gap: 16px; align-items: flex-start; }
+.manuscript-cover { width: 120px; border-radius: 14px; flex-shrink: 0; }
+.badge {
+  display:inline-flex; align-items:center; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:0.2rem 0.7rem; border-radius:999px; border:1px solid rgba(255,255,255,0.3); margin-bottom: 10px;
+}
+.card {
+  background:var(--card); border-radius:24px; padding:1.5rem;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* --- PODCAST SECTION (NEON STYLE) --- */
 .podcast-section .panel {
   position: relative;
   background: rgba(255,255,255,0.02);
-  /* Single Continuous Neon Line Border */
-  border: 2px solid #00C7FF;
+  border: 2px solid #00C7FF; /* Neon Border */
   border-radius: 26px;
   box-shadow: 0 0 20px rgba(0, 199, 255, 0.4);
-  margin-top: 50px; /* Space for the top sign */
+  margin-top: 50px;
   padding: 50px 24px 24px;
   overflow: visible !important;
 }
-
-/* The Top "Podcast" Sign */
 .podcast-top-sign {
-  position: absolute;
-  top: -30px; /* Sit right on the border line */
-  left: 50%;
-  transform: translateX(-50%);
-  height: 55px; /* Small, centered size */
-  width: auto;
-  z-index: 10;
-  /* MAGIC CODE: Removes black background */
-  mix-blend-mode: screen; 
-  pointer-events: none;
+  position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+  height: 55px; width: auto; z-index: 10;
+  mix-blend-mode: screen; pointer-events: none;
 }
-
-/* The Main Title */
-.podcast-title-image {
-  height: 84px; /* Locked to match Logo height */
-  width: auto;
-  display: block;
-  /* MAGIC CODE: Removes black background */
-  mix-blend-mode: screen; 
-  object-fit: contain;
-}
-
-.podcast-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 30px;
-}
-@media(max-width: 900px) { .podcast-grid { grid-template-columns: 1fr; } }
-
-.podcast-title-row {
-  display: flex;
-  align-items: center; /* Vertically center logo and title */
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.podcast-logo {
-  width: 84px; height: 84px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
+.podcast-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 30px; }
+@media (max-width: 880px) { .podcast-grid { grid-template-columns: 1fr; } }
+.podcast-title-row { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
+.podcast-logo { width: 84px; height: 84px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+.podcast-title-image { height: 84px; width: auto; display: block; mix-blend-mode: screen; object-fit: contain; }
 .episode-tile {
-  display: flex; gap: 15px; align-items: center;
-  background: rgba(255,255,255,0.03);
-  padding: 12px; border-radius: 12px; margin-bottom: 10px;
-  border: 1px solid rgba(255,255,255,0.05);
-  cursor: pointer; width: 100%; text-align: left;
-  color: var(--text);
+  display: flex; gap: 15px; align-items: center; width: 100%;
+  background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.05); cursor: pointer; color: var(--text); text-align: left;
 }
-.episode-tile:hover { border-color: var(--cyan); }
+.episode-tile:hover { border-color: var(--cyan); background: rgba(0,199,255,0.05); }
 .episode-tile img { width: 48px; height: 48px; border-radius: 8px; }
 
-/* --- MANUSCRIPTS GRID --- */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 16px;
-}
-.manuscript-card { display: flex; gap: 16px; align-items: flex-start; }
-.manuscript-cover { width: 120px; border-radius: 14px; }
-
 /* --- FOOTER --- */
-.footer { padding: 40px 0; color: var(--muted); font-size: 0.9rem; }
-.footer a { color: var(--text); }
+.footer { padding: 3rem 1.5rem; background:#050608; border-top:1px solid rgba(255,255,255,0.08); }
 </style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="container">
-    <div class="nav-inner">
-      <div class="brand"><div class="brand-mark">EL</div> EQUILIBRIUM LEDGER</div>
-      <nav class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#framework">Framework</a>
-        <a href="#reading">Reading Path</a>
-        <a href="#podcast">Podcast</a>
-        <a href="#contact">Contact</a>
-      </nav>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo-mark">EL</div>
+      <div>
+        <div style="letter-spacing:0.32em;">EQUILIBRIUM</div>
+        <div style="letter-spacing:0.20em; opacity:0.7;">LEDGER</div>
+      </div>
     </div>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#framework">Framework</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#publications">Publications</a>
+      <a href="#podcast">Podcast</a>
+      <a href="#giulia">Giulia Trust</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="pill accent" href="https://zenodo.org/" target="_blank">Zenodo</a>
   </div>
 </header>
 
-<section id="home" class="hero">
+<main id="home" class="section hero-section">
   <div class="container">
     <div class="panel">
       <div class="hero-grid">
-        <div>
-          <div style="font-size:12px; letter-spacing:2px; color:var(--muted); margin-bottom:10px;">EQUILIBRIUM LEDGER RESEARCH</div>
-          <h1 class="h1">Alessandro Grassini Grimaldi</h1>
-          <p style="font-size:1.2rem; color:var(--muted);">Modern institutions optimise for procedural speed. Human knowledge develops through temporal depth.</p>
-          <div style="display:flex; gap:10px; margin-top:20px;">
-            <a href="#reading" class="pill" style="background:var(--gold); color:black; border:none;">Reading Path</a>
-            <a href="https://zenodo.org/" class="pill">Zenodo Community</a>
+        <div class="hero-copy">
+          <div style="letter-spacing:0.32em; font-weight:800; font-size:12px; color:rgba(255,255,255,0.60); margin-bottom:10px;">
+            EQUILIBRIUM LEDGER RESEARCH
+          </div>
+          <div class="h1">Alessandro Grassini Grimaldi
+            <span style="display:block; font-size:20px; color:var(--muted); font-weight:400; margin-top:10px;">
+              Independent Researcher, Founder of the Equilibrium Ledger Framework
+            </span>
+          </div>
+          <p style="color:var(--muted); font-size:1.1rem; margin:20px 0;">
+            Modern institutions optimise for procedural speed.<br>
+            Human knowledge develops through temporal depth.<br>
+            The Equilibrium Ledger reconciles this structural asymmetry.
+          </p>
+          <div class="hero-actions" style="display:flex; gap:10px; margin-top:20px;">
+            <a class="pill gold" href="#reading">Reading Path</a>
+            <a class="pill" href="https://zenodo.org/" target="_blank">Zenodo Community</a>
+            <a class="pill" href="https://orcid.org/0009-0009-5634-2273" target="_blank">ORCID</a>
           </div>
         </div>
         <div class="hero-art">
@@ -186,17 +200,128 @@ img { max-width: 100%; display: block; }
       </div>
     </div>
   </div>
-</section>
+</main>
 
 <section id="framework" class="section">
   <div class="container">
-    <div class="panel" style="padding:40px;">
-      <div class="hero-grid">
-        <img src="Framework1.jpg" style="border-radius:18px;" alt="Framework">
-        <div>
-          <h2 style="font-size:2rem; margin-top:0;">The Framework</h2>
-          <p class="lead">The Equilibrium Ledger runs on two axes: a procedural axis charting governmental velocity, and a temporal axis registering the accrued depth of knowledge.</p>
+    <div class="panel">
+      <div class="split reverse">
+        <div class="media">
+          <img src="Framework1.jpg" style="border-radius:20px;" alt="Framework Structure">
         </div>
+        <div>
+          <div class="card">
+            <div style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; margin-bottom:10px; color:var(--muted);">Research Centre</div>
+            <h2 style="margin-top:0">A research framework for institutional time</h2>
+            <p style="color:var(--muted);">The Equilibrium Ledger Research centre operates as a compact academic atelier that blends museum grade restraint with engineered clarity.</p>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <h3>Dual temporal axes</h3>
+            <p style="color:var(--muted); font-size:0.9rem;">The Ledger runs on two axes: a procedural axis charting governmental velocity, and a temporal axis registering the accrued depth of knowledge.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="fine-print">Core architecture</p>
+      <h2>The modular pillars of the Equilibrium Ledger</h2>
+    </div>
+    <div class="architecture-grid">
+      <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Temporal Architecture of Cognition</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">A Dual Axis Framework for Human and Synthetic Meaning.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+      <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Vertical Time Diagnostic</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">Empirical Demonstration of Cognitive Flattening in AI.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+      <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Turing Theory and the Law of the Dead Asset</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">Institutional Time, Cognitive Risk, and Erasure.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+      <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Quantum Boomerang Architecture</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">Human Energetics and Institutional Bifurcation.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+      <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Cellophane State</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">From Density to Abstraction in Governance.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+       <article class="architecture-card">
+        <div class="card-icon">EL</div>
+        <h3>The Roadrunner Loop in Art History</h3>
+        <p style="font-size:0.85rem; color:var(--muted);">Visual lineage and institutional time loops.</p>
+        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="publications" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="fine-print">Selected Publications</p>
+      <h2>DOI-curated entries</h2>
+    </div>
+    <div class="architecture-grid">
+      <article class="publication-card">
+        <h3>The Equilibrium Ledger Thesis Proposal</h3>
+        <p style="font-size:0.9rem; color:var(--muted);">A Temporal Framework for Cognitive, Institutional, and Synthetic Stability.</p>
+        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
+      </article>
+      <article class="publication-card">
+        <h3>The King Solomon Protocol</h3>
+        <p style="font-size:0.9rem; color:var(--muted);">Framework for Human Supervised Arbitration in Multi Model AI.</p>
+        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
+      </article>
+      <article class="publication-card">
+        <h3>The Leonardo Paradox</h3>
+        <p style="font-size:0.9rem; color:var(--muted);">Neurodivergent Cognitive Architecture in Elite Universities.</p>
+        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="reading" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="fine-print">Canonical Reading Pathway</p>
+      <h2>Guided entry to the ledger</h2>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <span class="badge">Step 1</span>
+        <h3>The Literary Ledger</h3>
+        <p style="color:var(--muted); font-size:0.9rem;">A long form literary descent through memory, power, and cultural aftermath.</p>
+        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 27 min</span>
+      </div>
+      <div class="card">
+        <span class="badge">Step 2</span>
+        <h3>The Visual Ledger</h3>
+        <p style="color:var(--muted); font-size:0.9rem;">A visual lineage reading of art history as institutional time.</p>
+        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 18 min</span>
+      </div>
+      <div class="card">
+        <span class="badge">Step 3</span>
+        <h3>The Architecture of Thought</h3>
+        <p style="color:var(--muted); font-size:0.9rem;">The School of Athens as a visual proto model for the ledger.</p>
+        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 22 min</span>
       </div>
     </div>
   </div>
@@ -204,8 +329,11 @@ img { max-width: 100%; display: block; }
 
 <section id="manuscripts" class="section">
   <div class="container">
+    <div class="section-header">
+      <div class="fine-print">MANUSCRIPTS</div>
+      <h2>Writing Across Time, Memory, and Human Pattern</h2>
+    </div>
     <div class="cards-grid">
-      
       <article class="card manuscript-card">
         <img src="voices_cover.png" class="manuscript-cover" alt="Voices Cover">
         <div>
@@ -214,7 +342,6 @@ img { max-width: 100%; display: block; }
           <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
         </div>
       </article>
-
       <article class="card manuscript-card">
         <img src="Audhd_cover.png" class="manuscript-cover" alt="AuDHD Cover">
         <div>
@@ -223,7 +350,6 @@ img { max-width: 100%; display: block; }
           <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
         </div>
       </article>
-
       <article class="card manuscript-card">
         <img src="experiment_cover.png" class="manuscript-cover" alt="Experiment Cover">
         <div>
@@ -232,7 +358,29 @@ img { max-width: 100%; display: block; }
           <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
         </div>
       </article>
+    </div>
+  </div>
+</section>
 
+<section id="giulia" class="section">
+  <div class="container">
+    <div class="panel">
+      <div class="split">
+        <div>
+          <h2 style="margin-top:0">Giulia Trust</h2>
+          <p class="lead" style="color:var(--text); font-size:1.1rem;">
+            Founded by Alessandro in honour of his mother, Giulia. The trust centres neurodivergent people and their families.
+          </p>
+          <div class="grid3" style="margin-top:20px;">
+            <div class="card"><h3>Navigation clinic</h3><p style="font-size:0.85rem; color:var(--muted);">One to one guidance.</p></div>
+            <div class="card"><h3>Documentation</h3><p style="font-size:0.85rem; color:var(--muted);">Plain language templates.</p></div>
+            <div class="card"><h3>Training</h3><p style="font-size:0.85rem; color:var(--muted);">Institutional briefings.</p></div>
+          </div>
+        </div>
+        <div class="media">
+          <img src="framework3.jpeg" alt="Equilibrium Ledger tower">
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -243,57 +391,52 @@ img { max-width: 100%; display: block; }
       
       <img class="podcast-top-sign" src="podcast_neon.png" alt="Podcast">
 
-      <div class="podcast-inner">
-        <div class="podcast-grid">
-          <div class="podcast-left">
-            
-            <div class="podcast-title-row">
-              <img class="podcast-logo" src="podcast_logo.png" alt="Logo">
-              
-              <img class="podcast-title-image" src="permission_to_think_title_neon.png" alt="Permission to Think">
-            </div>
-
-            <p class="lead">
-              Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi, translated into lived navigation.
-            </p>
-
-            <div class="grid3" style="margin:30px 0;">
-              <div class="card"><h3>Episodes</h3><p style="font-size:0.9rem; color:var(--muted);">Micro essays, case studies, and field notes.</p></div>
-              <div class="card"><h3>Formats</h3><p style="font-size:0.9rem; color:var(--muted);">Audio, transcripts, and structured summaries.</p></div>
-              <div class="card"><h3>Distribution</h3><p style="font-size:0.9rem; color:var(--muted);">Spotify, YouTube, and on page listening.</p></div>
-            </div>
-
-            <h4 style="margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; font-size:0.8rem; color:var(--muted);">Latest Episodes</h4>
-            <div class="episode-list">
-              <button class="episode-tile">
-                <img src="podcast_logo.png" alt="">
-                <div>
-                  <div style="font-weight:700;">Episode 1: Title to be announced</div>
-                  <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Article</div>
-                </div>
-              </button>
-              <button class="episode-tile">
-                <img src="podcast_logo.png" alt="">
-                <div>
-                  <div style="font-weight:700;">Episode 2: Title to be announced</div>
-                  <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Proposal</div>
-                </div>
-              </button>
-            </div>
-            
-            <div style="margin-top:20px; display:flex; gap:10px;">
-              <a href="#" class="pill accent">Spotify</a>
-              <a href="#" class="pill">YouTube</a>
-            </div>
-
+      <div class="podcast-grid">
+        <div class="podcast-left">
+          
+          <div class="podcast-title-row">
+            <img class="podcast-logo" src="podcast_logo.png" alt="Logo">
+            <img class="podcast-title-image" src="permission_to_think_title_neon.png" alt="Permission to Think">
           </div>
 
-          <div class="podcast-right">
-            <figure style="margin:0;">
-              <img src="podcast_studio.png" style="border-radius:18px; border:1px solid rgba(255,255,255,0.1);" alt="Studio">
-              <figcaption style="font-size:0.8rem; color:var(--muted); margin-top:8px;">Synthetic studio image. Alex and Giulia are voiced characters.</figcaption>
-            </figure>
+          <p class="lead" style="color:var(--muted); font-size:1.1rem;">
+            Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi.
+          </p>
+
+          <div class="grid3" style="margin:30px 0;">
+            <div class="card"><h3>Episodes</h3><p style="font-size:0.9rem; color:var(--muted);">Micro essays and notes.</p></div>
+            <div class="card"><h3>Formats</h3><p style="font-size:0.9rem; color:var(--muted);">Audio and transcripts.</p></div>
+            <div class="card"><h3>Distribution</h3><p style="font-size:0.9rem; color:var(--muted);">Spotify and YouTube.</p></div>
           </div>
+
+          <div class="episode-list">
+            <button class="episode-tile">
+              <img src="podcast_logo.png" alt="">
+              <div>
+                <div style="font-weight:700;">Episode 1: Title to be announced</div>
+                <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Article</div>
+              </div>
+            </button>
+            <button class="episode-tile">
+              <img src="podcast_logo.png" alt="">
+              <div>
+                <div style="font-weight:700;">Episode 2: Title to be announced</div>
+                <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Proposal</div>
+              </div>
+            </button>
+          </div>
+          
+          <div style="margin-top:20px; display:flex; gap:10px;">
+            <a href="#" class="pill accent">Spotify</a>
+            <a href="#" class="pill">YouTube</a>
+          </div>
+        </div>
+
+        <div class="podcast-right">
+          <figure style="margin:0;">
+            <img src="podcast_studio.png" style="border-radius:18px; border:1px solid rgba(255,255,255,0.1);" alt="Studio">
+            <figcaption style="font-size:0.8rem; color:var(--muted); margin-top:8px;">Synthetic studio image. Alex and Giulia are voiced characters.</figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -302,10 +445,10 @@ img { max-width: 100%; display: block; }
 
 <footer id="contact" class="footer">
   <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
       <div>
         <div style="font-weight:700; font-size:1.2rem; margin-bottom:5px;">Alessandro Grassini Grimaldi</div>
-        <div>info@giuliatrust.org</div>
+        <div style="color:var(--muted);">info@giuliatrust.org</div>
       </div>
       <div style="display:flex; gap:15px;">
         <a href="#framework">Framework</a>
