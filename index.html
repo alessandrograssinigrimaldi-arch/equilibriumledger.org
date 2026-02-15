@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Equilibrium Ledger Research</title>
 <style>
-/* --- 1. CORE VARIABLES (The Index 3 Colours) --- */
+/* --- 1. THE VISUAL DNA (Colors & Background from Index 3) --- */
 :root {
   --bg: #0A0B0D;
   --text: #F2F4F6;
@@ -23,7 +23,7 @@ html { scroll-behavior:smooth; }
 body {
   margin: 0;
   background-color: var(--bg);
-  /* The Glassy Gradient Background */
+  /* The exact gradient you wanted */
   background-image: 
     radial-gradient(circle at 20% 10%, rgba(90,200,250,0.12), transparent 55%),
     radial-gradient(circle at 80% 30%, rgba(255,200,80,0.10), transparent 50%);
@@ -38,34 +38,33 @@ img { max-width: 100%; display: block; }
 /* --- 2. THE BIG FRAMES (The Panel Class) --- */
 .container { max-width:1200px; margin:0 auto; padding:0 22px; }
 
-/* This is the "Big Block" you circled - The Container Frame */
+/* This is the "Big Block" Frame */
 .panel {
   border: 1px solid rgba(255,255,255,0.10);
   background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
   border-radius: var(--radius);
-  box-shadow: 0 28px 70px rgba(0,0,0,0.45); /* Heavy shadow */
+  box-shadow: 0 28px 70px rgba(0,0,0,0.45); /* Heavy Shadow */
   padding: 40px;
   position: relative;
   overflow: visible;
   margin-bottom: 20px;
 }
 
-/* --- 3. THE INNER BLOCKS (The Card Class) --- */
-/* These are the smaller blocks inside the Big Frame */
+/* The Cards INSIDE the Frames */
 .card {
   background: var(--card);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 18px;
   padding: 1.5rem;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
 }
 
 /* --- NAVIGATION --- */
 .site-header {
-  position:sticky; top:0; z-index:50;
+  position:sticky; top:0; z-index:15;
   background:rgba(10,11,13,0.95); backdrop-filter:blur(16px);
   border-bottom:1px solid rgba(255,255,255,0.08); padding:1rem 0;
 }
@@ -107,7 +106,6 @@ img { max-width: 100%; display: block; }
 .section-title h2 { margin: 0; font-size: 2.2rem; }
 .hint { color: var(--muted); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
 
-/* The Grid System (Fixes the vertical stacking issue) */
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
 .split { display:grid; grid-template-columns: 1.05fr 0.95fr; gap:22px; align-items:center; }
@@ -118,7 +116,7 @@ img { max-width: 100%; display: block; }
 .h1 { font-size:clamp(42px,6vw,84px); margin:10px 0; line-height:1.05; }
 .hero-art { border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 
-/* --- PODCAST (NEON FRAME) --- */
+/* --- PODCAST (The Neon Frame) --- */
 .podcast-section .panel {
   border: 2px solid #00C7FF; /* Blue Neon Border */
   box-shadow: 0 0 25px rgba(0, 199, 255, 0.35);
@@ -357,7 +355,7 @@ img { max-width: 100%; display: block; }
       <p class="hint">Writing Across Time and Memory</p>
     </div>
     <div class="panel"> <div class="cards-grid">
-        <article class="card manuscript-card">
+        <article class="manuscript-card">
           <img src="voices_cover.png" class="manuscript-cover" alt="Voices Cover">
           <div>
             <h3>Voices Against Oblivion</h3>
@@ -365,7 +363,7 @@ img { max-width: 100%; display: block; }
             <a href="https://doi.org/10.5281/zenodo.18637184" target="_blank" class="btn">Read PDF</a>
           </div>
         </article>
-        <article class="card manuscript-card">
+        <article class="manuscript-card">
           <img src="Audhd_cover.png" class="manuscript-cover" alt="AuDHD Cover">
           <div>
             <h3>I Am Not Crazy, I Have Just Got ADHD</h3>
@@ -373,7 +371,7 @@ img { max-width: 100%; display: block; }
             <a href="https://doi.org/10.5281/zenodo.18637315" target="_blank" class="btn">Read PDF</a>
           </div>
         </article>
-        <article class="card manuscript-card">
+        <article class="manuscript-card">
           <img src="experiment_cover.png" class="manuscript-cover" alt="Experiment Cover">
           <div>
             <h3>You Were The Experiment</h3>
