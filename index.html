@@ -18,7 +18,11 @@
 *, *::before, *::after { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
-  margin:0; background:var(--bg); color:var(--text);
+  margin:0;
+  background-color: #0A0B0D; /* FORCES DARK MODE IMMEDIATELY */
+  background-image: radial-gradient(circle at 15% 50%, rgba(0, 199, 255, 0.08), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(201, 168, 92, 0.08), transparent 25%);
+  color:var(--text);
   font-family: ui-rounded, system-ui, -apple-system, sans-serif;
   line-height:1.6; min-height:100vh;
 }
@@ -29,7 +33,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--cyan); outline-o
 /* --- NAVIGATION --- */
 .site-header {
   position:sticky; top:0; z-index:15;
-  background:rgba(10,11,13,0.85); backdrop-filter:blur(16px);
+  background:rgba(10,11,13,0.9); backdrop-filter:blur(16px);
   border-bottom:1px solid rgba(255,255,255,0.08); padding:1rem 0;
 }
 .header-inner {
@@ -59,6 +63,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--cyan); outline-o
   display:inline-flex; align-items:center; justify-content:center;
   padding:0.65rem 1.25rem; border-radius:12px; font-size:0.9rem; font-weight:600;
   background:var(--card); border:1px solid rgba(255,255,255,0.1); color:var(--text); cursor:pointer;
+  text-decoration: none;
 }
 .btn.primary { background:var(--gold); color:#000; border:none; }
 .btn.secondary { background:rgba(0,199,255,0.1); border-color:var(--cyan); color:var(--cyan); }
@@ -214,12 +219,12 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--cyan); outline-o
         <div>
           <div class="card">
             <div style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; margin-bottom:10px; color:var(--muted);">Research Centre</div>
-            <h2 style="margin-top:0">A research framework for institutional time, epistemic accessibility, and governance design</h2>
+            <h2 style="margin-top:0">A research framework for institutional time</h2>
             <p style="color:var(--muted);">The Equilibrium Ledger Research centre operates as a compact academic atelier that blends museum grade restraint with engineered clarity, tracing how institutions stress time while human knowledge accrues depth.</p>
           </div>
           <div class="card" style="margin-top:18px">
-            <h3>Dual temporal axes and the living ledger</h3>
-            <p style="color:var(--muted); font-size:0.9rem;">The Equilibrium Ledger runs on two axes, a procedural axis charting governmental velocity and automation, and a temporal axis registering the accrued depth of knowledge, care, and lived experience. Each ledger entry captures metadata about governance, epistemic accessibility, and the synthetic systems it monitors.</p>
+            <h3>Dual temporal axes</h3>
+            <p style="color:var(--muted); font-size:0.9rem;">The Ledger runs on two axes: a procedural axis charting governmental velocity, and a temporal axis registering the accrued depth of knowledge.</p>
           </div>
         </div>
       </div>
