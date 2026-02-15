@@ -5,459 +5,1302 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Equilibrium Ledger Research</title>
 <style>
-/* --- CORE VARIABLES --- */
-:root {
+@import:root {
   --bg:#0A0B0D;
   --text:#F2F4F6;
   --muted:#9BA1A6;
   --gold:#C9A85C;
   --cyan:#00C7FF;
   --card:#111318;
+  --border:#1F2127;
+  --glow:0 0 24px rgba(0,199,255,0.18);
   --radius:18px;
 }
-*, *::before, *::after { box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body {
-  margin:0; background:var(--bg); color:var(--text);
-  font-family: ui-rounded, system-ui, -apple-system, sans-serif;
-  line-height:1.6; min-height:100vh;
+*,
+*::before,
+*::after {
+  box-sizing:border-box;
 }
-a { color:var(--cyan); text-decoration:none; }
-img { max-width: 100%; display: block; }
-a:focus-visible, button:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
-
-/* --- NAVIGATION --- */
+html {
+  scroll-behavior:smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+  html {
+    scroll-behavior:auto;
+  }
+}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height:1.6;
+  min-height:100vh;
+}
+a {
+  color:var(--cyan);
+  text-decoration:none;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+}
+.skip-link {
+  position:absolute;
+  top:0;
+  left:0;
+  background:var(--gold);
+  color:#0A0B0D;
+  padding:0.75rem 1.25rem;
+  transform:translateY(-120%);
+  transition:transform 0.3s ease;
+  z-index:20;
+}
+.skip-link:focus-visible {
+  transform:translateY(0);
+}
 .site-header {
-  position:sticky; top:0; z-index:50;
-  background:rgba(10,11,13,0.85); backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.08); padding:1rem 0;
+  position:sticky;
+  top:0;
+  z-index:15;
+  background:rgba(10,11,13,0.85);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(16px);
+  transition:padding 0.3s ease, border-color 0.3s ease;
+}
+.site-header.scrolled {
+  padding:0.45rem 0;
+  border-color:rgba(255,255,255,0.15);
 }
 .header-inner {
-  display:flex; align-items:center; justify-content:space-between;
-  max-width:1200px; margin:0 auto; padding:0 1.5rem; flex-wrap: wrap; gap: 1rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:1.25rem 1.5rem;
+  gap:1rem;
+  max-width:1200px;
+  margin:0 auto;
+  flex-wrap:wrap;
 }
-.brand { display:flex; align-items:center; gap:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem; }
+.brand {
+  display:flex;
+  align-items:center;
+  gap:0.65rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  font-size:0.85rem;
+}
 .brand .logo-mark {
-  width:38px; height:38px; background:linear-gradient(135deg,var(--gold),var(--cyan));
-  border-radius:12px; display:flex; align-items:center; justify-content:center;
-  font-size:0.9rem; font-weight:700; color:#0A0B0D;
+  width:38px;
+  height:38px;
+  background:linear-gradient(135deg,var(--gold),var(--cyan));
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.9rem;
+  font-weight:700;
+  color:#0A0B0D;
 }
-.nav-links { display:flex; gap:0.5rem; flex-wrap: wrap; }
-.nav-links a {
-  padding:0.45rem 0.75rem; font-size:0.95rem; border-radius:999px;
-  border:1px solid transparent; color: var(--muted);
+nav {
+  display:none;
+  gap:0.85rem;
+  flex-wrap:wrap;
 }
-.nav-links a:hover { color: var(--text); border-color:rgba(255,255,255,0.2); }
-.pill {
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:0.65rem 1.25rem; border-radius:999px; font-weight:600; font-size:0.85rem;
-  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.04); color:var(--text);
+nav a {
+  padding:0.45rem 0.75rem;
+  font-size:0.95rem;
+  border-radius:999px;
+  border:1px solid transparent;
+  transition:border 0.3s ease, color 0.3s ease;
 }
-.pill.accent { border-color:var(--cyan); color:var(--cyan); background:rgba(0,199,255,0.08); }
-.pill.gold { border-color:var(--gold); color:var(--gold); background:rgba(201,162,74,0.08); }
+nav a:hover {
+  border-color:rgba(255,255,255,0.5);
+}
+nav a.active {
+  border-color:var(--cyan);
+}
+nav.is-open {
+  display:flex;
+  position:fixed;
+  top:68px;
+  left:0;
+  right:0;
+  background:rgba(10,11,13,0.95);
+  padding:1rem 1.5rem;
+  flex-direction:column;
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+}
+nav.is-open a {
+  border-color:rgba(255,255,255,0.08);
+}
+.nav-toggle {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.4);
+  color:var(--text);
+  padding:0.4rem 0.9rem;
+  border-radius:999px;
+  font-size:0.95rem;
+  transition:background 0.3s ease, transform 0.3s ease;
+  cursor:pointer;
+}
+.nav-toggle:hover {
+  background:rgba(255,255,255,0.08);
+  transform:translateY(-2px);
+}
 .btn {
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:0.65rem 1.25rem; border-radius:12px; font-size:0.9rem; font-weight:600;
-  background:var(--card); border:1px solid rgba(255,255,255,0.1); color:var(--text); cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0.85rem 1.45rem;
+  border-radius:999px;
+  border:1px solid transparent;
+  font-weight:600;
+  font-size:0.95rem;
+  transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+  cursor:pointer;
 }
-.btn.primary { background:var(--gold); color:#000; border:none; }
-.btn:hover { transform: translateY(-2px); }
-
-/* --- LAYOUT --- */
-.section { padding: 4rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-.container { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
-.panel {
-  border:1px solid rgba(255,255,255,0.10);
-  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-  border-radius:var(--radius); box-shadow:0 28px 70px rgba(0,0,0,0.40);
-  padding: 30px;
+.btn:hover {
+  transform:translateY(-2px);
 }
-.hero-grid { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:40px; align-items:center; }
-.split { display:grid; grid-template-columns: 1.05fr 0.95fr; gap:22px; align-items:center; }
-.split.reverse { grid-template-columns:0.95fr 1.05fr; }
-.grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.25rem; }
-
-/* --- HERO --- */
-.h1 { font-size:clamp(42px,6vw,84px); margin:10px 0; line-height:1.05; }
-.hero-art {
-  border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 0 40px rgba(0,199,255,0.15);
+.btn.primary {
+  background:var(--gold);
+  color:#0A0B0D;
 }
-
-/* --- CARDS & ARCHITECTURE --- */
-.section-header { max-width:940px; margin-bottom:2rem; }
-.fine-print { text-transform:uppercase; letter-spacing:3px; color:var(--muted); font-size: 0.8rem; }
-.architecture-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; }
-.architecture-card, .publication-card {
-  background:var(--card); border-radius:20px; padding:1.5rem;
-  border:1px solid rgba(255,255,255,0.05); transition:transform 0.2s;
+.btn.secondary {
+  border-color:var(--cyan);
+  color:var(--cyan);
+  background:rgba(0,199,255,0.08);
 }
-.architecture-card:hover { transform:translateY(-3px); border-color:var(--cyan); }
-.card-icon {
-  width:32px; height:32px; background:linear-gradient(135deg,var(--gold),var(--cyan));
-  border-radius:8px; display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:0.75rem; color:#000; margin-bottom: 12px;
+.btn.tertiary {
+  border-color:transparent;
+  color:var(--text);
+  background:rgba(255,255,255,0.08);
 }
-.publication-actions { margin-top: 15px; display: flex; gap: 10px; }
-
-/* --- MANUSCRIPTS --- */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
-.manuscript-card { display: flex; gap: 16px; align-items: flex-start; }
-.manuscript-cover { width: 120px; border-radius: 14px; flex-shrink: 0; }
-.badge {
-  display:inline-flex; align-items:center; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase;
-  padding:0.2rem 0.7rem; border-radius:999px; border:1px solid rgba(255,255,255,0.3); margin-bottom: 10px;
+.hero-section {
+  background-image: radial-gradient(circle at 20% 10%, rgba(90,200,250,0.12), transparent 55%),
+                    radial-gradient(circle at 80% 30%, rgba(255,200,80,0.10), transparent 50%);
+  padding: 1.5rem 1.5rem 2.25rem;
+  display: flex;
+  align-items: center;
+  min-height: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.card {
-  background:var(--card); border-radius:24px; padding:1.5rem;
+.hero-content {
+  max-width:720px;
+}
+.hero-content h1 {
+  font-family:'Nunito', 'Inter', system-ui, sans-serif;
+  font-size:clamp(42px,6vw,84px);
+  margin-bottom:0.5rem;
+  letter-spacing:0.02em;
+}
+.hero-content p {
+  margin:0.4rem 0;
+  color:var(--muted);
+  font-size:clamp(16px,2vw,22px);
+  line-height:1.6;
+}
+.micro-statements {
+  margin:1rem 0 1.5rem;
+}
+.micro-statements p {
+  margin:0.4rem 0;
+  font-size:1.05rem;
+  line-height:1.6;
+}
+.hero-ctas {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.9rem;
+  margin-bottom:1.25rem;
+}
+.trust-strip {
+  display:flex;
+  flex-wrap:wrap;
+  gap:1.25rem;
+  padding:1.25rem 1rem;
+  background:rgba(255,255,255,0.03);
+  border-radius:28px;
   border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 12px 24px rgba(0,0,0,0.45);
+}
+.trust-strip a {
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+  font-size:0.9rem;
+  color:var(--text);
+}
+.trust-strip .icon {
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.75rem;
+  color:var(--gold);
+}
+.section {
+  padding:4rem 1.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.section-header {
+  max-width:940px;
+  margin-bottom:1.75rem;
+}
+.section-header h2 {
+  font-size:clamp(30px,4vw,42px);
+  margin:0 0 0.6rem;
+  font-family:'Nunito', 'Inter', sans-serif;
+}
+.section-header p {
+  color:var(--muted);
+  margin:0;
+}
+.section-header .fine-print {
+  text-transform:uppercase;
+  letter-spacing:0.25em;
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.5);
+  margin-bottom:0.35rem;
+}
+.two-column {
+  display:grid;
+  gap:2rem;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  align-items:center;
+}
+.framework-text h3 {
+  font-size:1.25rem;
+  margin-top:0;
+  margin-bottom:0.35rem;
+  font-weight:600;
+}
+.framework-text a {
+  color:var(--cyan);
+}
+.framework-card {
+  background:var(--card);
+  border-radius:24px;
+  padding:1rem;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:var(--glow);
+}
+.framework-card img {
+  width:100%;
+  border-radius:20px;
+  display:block;
+}
+.framework-card figcaption {
+  margin-top:0.65rem;
+  font-size:0.85rem;
+  color:var(--muted);
+}
+.framework-card button {
+  margin-top:0.75rem;
+}
+.architecture-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.25rem;
+}
+.architecture-card {
+  background:var(--card);
+  border-radius:20px;
+  padding:1.25rem;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:box-shadow 0.3s ease, transform 0.3s ease;
+}
+.architecture-card:hover {
+  box-shadow:var(--glow);
+  transform:translateY(-3px);
+}
+.architecture-card .card-icon {
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--gold),var(--cyan));
+  color:#0A0B0D;
+  font-weight:800;
+  font-size:0.85rem;
+  letter-spacing:0.06em;
+  cursor:pointer;
+  padding:0;
+  line-height:1;
+  font-family:inherit;
+  border:none;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+.publication-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.25rem;
+}
+.publication-card {
+  background:var(--card);
+  border-radius:24px;
+  padding:1.5rem;
+  border:1px solid rgba(255,255,255,0.05);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+.publication-card h3 {
+  margin:0;
+  font-size:1.2rem;
+}
+.publication-card p {
+  margin:0;
+  color:var(--muted);
+  font-size:0.95rem;
+}
+.publication-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.6rem;
+}
+.citation-tools {
+  margin-top:1rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.6rem;
+  align-items:center;
+  font-size:0.9rem;
+}
+.citation-tools label {
+  color:var(--muted);
+}
+.citation-tools select {
+  background:var(--bg);
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+  padding:0.45rem 0.8rem;
+  border-radius:12px;
+}
+.reading-path ol {
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:1.25rem;
+}
+.path-step {
+  background:var(--card);
+  border-radius:20px;
+  padding:1.4rem;
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow:0 12px 24px rgba(0,0,0,0.45);
+}
+.path-step h3 {
+  margin:0.4rem 0 0.3rem;
+  font-size:1.25rem;
+}
+.path-step p {
+  margin:0;
+  color:var(--muted);
+}
+.badge {
+  display:inline-flex;
+  align-items:center;
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  padding:0.2rem 0.7rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.3);
+}
+.time-badge {
+  border-color:var(--gold);
+  color:var(--gold);
+}
+.podcast-module {
+  display:grid;
+  gap:1.5rem;
+}
+.episode-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1rem;
+}
+.episode-card {
+  background:var(--card);
+  border-radius:20px;
+  padding:1.25rem;
+  border:1px solid rgba(255,255,255,0.05);
+  display:flex;
+  flex-direction:column;
+  gap:0.85rem;
+}
+.episode-card h3 {
+  margin:0;
+  font-size:1.1rem;
+}
+.episode-card p {
+  margin:0;
+  color:var(--muted);
+  font-size:0.9rem;
+}
+.episode-actions {
+  display:flex;
+  gap:0.5rem;
+  flex-wrap:wrap;
+}
+.embed-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.embed-grid iframe {
+  width:100%;
+  border:none;
+  border-radius:20px;
+  min-height:210px;
+  background:#050608;
+}
+.lineage-figure {
+  border:1px solid rgba(255,255,255,0.12);
+  padding:1.5rem;
+  border-radius:28px;
+  background:rgba(255,255,255,0.02);
+  box-shadow:0 20px 40px rgba(0,0,0,0.45);
+}
+.lineage-figure img {
+  width:100%;
+  border-radius:20px;
+  display:block;
+  height:auto;
+}
+.lineage-figure figcaption {
+  margin-top:0.9rem;
+  font-size:0.95rem;
+  color:var(--muted);
+}
+.lineage-note {
+  font-size:0.9rem;
+  color:var(--muted);
+  margin-top:0.6rem;
+}
+.contact-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;
+}
+.contact-card {
+  background:var(--card);
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,0.06);
+  padding:1.5rem;
+}
+.contact-card h3 {
+  margin-top:0;
+}
+form {
+  display:grid;
+  gap:0.85rem;
+}
+label {
+  font-size:0.9rem;
+  color:var(--muted);
+}
+input,
+textarea {
+  width:100%;
+  padding:0.75rem 0.9rem;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(10,11,13,0.85);
+  color:var(--text);
+  font-family:inherit;
+  font-size:0.95rem;
+}
+textarea {
+  resize:vertical;
+  min-height:130px;
+}
+.checkbox-row {
+  display:flex;
+  align-items:flex-start;
+  gap:0.65rem;
+  font-size:0.85rem;
+  color:var(--muted);
+}
+.checkbox-row input {
+  width:auto;
+  margin-top:0.25rem;
+}
+.site-footer {
+  padding:3rem 1.5rem;
+  text-align:center;
+}
+.site-footer p {
+  margin:0.35rem 0;
+  color:var(--muted);
+  font-size:0.9rem;
+}
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:1.5rem;
+  z-index:30;
+}
+.modal.open {
+  display:flex;
+}
+.modal-content {
+  background:var(--card);
+  border-radius:24px;
+  padding:1.5rem;
+  max-width:680px;
+  width:100%;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+}
+.modal-header {
+  display:flex;
+  align-items:start;
+  justify-content:space-between;
+  gap:1rem;
+}
+.modal-header h3 {
+  margin:0;
+}
+.modal-close {
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+  border-radius:14px;
+  padding:0.35rem 0.65rem;
+  cursor:pointer;
+}
+.modal-close:hover {
+  background:rgba(255,255,255,0.18);
+}
+.toast {
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(17,19,24,0.95);
+  padding:0.8rem 1.2rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text);
+  font-size:0.9rem;
+  box-shadow:0 18px 40px rgba(0,0,0,0.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease;
+  z-index:50;
+}
+.toast.visible {
+  opacity:1;
+}
+.floating-archive {
+  position:fixed;
+  right:18px;
+  bottom:22px;
+  z-index:25;
+  display:flex;
+  flex-direction:column;
+  gap:0.75rem;
+  opacity:0;
+  transform:translateY(14px);
+  pointer-events:none;
+  transition:opacity 0.3s ease, transform 0.3s ease;
+}
+.floating-archive.visible {
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.floating-archive a {
+  background:rgba(17,19,24,0.95);
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:999px;
+  padding:0.65rem 1.1rem;
+  font-size:0.85rem;
+  color:var(--text);
+  box-shadow:0 12px 26px rgba(0,0,0,0.45);
+}
+.floating-archive a:hover {
+  border-color:var(--cyan);
+}
+@media (min-width: 960px) {
+  nav {
+    display:flex;
+  }
+  .nav-toggle {
+    display:none;
+  }
+  nav.is-open {
+    position:static;
+    flex-direction:row;
+    background:transparent;
+    padding:0;
+    box-shadow:none;
+  }
+}
+@media (max-width: 720px) {
+  .header-inner {
+    padding:1rem 1.2rem;
+  }
+  .trust-strip {
+    flex-direction:column;
+    align-items:flex-start;
+  }
 }
 
-/* --- PODCAST SECTION (NEON STYLE) --- */
-.podcast-section .panel {
+/* --- FIXED PODCAST STYLING --- */
+
+/* 1. The Container Border */
+.podcast-section .container > .panel {
   position: relative;
-  background: rgba(255,255,255,0.02);
-  border: 2px solid #00C7FF; /* Neon Border */
+  border: 2px solid #00C7FF;
   border-radius: 26px;
-  box-shadow: 0 0 20px rgba(0, 199, 255, 0.4);
-  margin-top: 50px;
-  padding: 50px 24px 24px;
+  box-shadow: 0 0 15px rgba(0, 199, 255, 0.4);
   overflow: visible !important;
+  margin-top: 50px;
+  background: rgba(255,255,255,0.02);
 }
-.podcast-top-sign {
-  position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-  height: 55px; width: auto; z-index: 10;
-  mix-blend-mode: screen; pointer-events: none;
-}
-.podcast-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 30px; }
-@media (max-width: 880px) { .podcast-grid { grid-template-columns: 1fr; } }
-.podcast-title-row { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
-.podcast-logo { width: 84px; height: 84px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
-.podcast-title-image { height: 84px; width: auto; display: block; mix-blend-mode: screen; object-fit: contain; }
-.episode-tile {
-  display: flex; gap: 15px; align-items: center; width: 100%;
-  background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; margin-bottom: 10px;
-  border: 1px solid rgba(255,255,255,0.05); cursor: pointer; color: var(--text); text-align: left;
-}
-.episode-tile:hover { border-color: var(--cyan); background: rgba(0,199,255,0.05); }
-.episode-tile img { width: 48px; height: 48px; border-radius: 8px; }
 
-/* --- FOOTER --- */
-.footer { padding: 3rem 1.5rem; background:#050608; border-top:1px solid rgba(255,255,255,0.08); }
+/* Hide old pseudo-elements */
+.podcast-section .panel::before,
+.podcast-section .panel::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* 2. The "Podcast" Top Sign */
+.podcast-top-sign {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 70px;
+  width: auto;
+  z-index: 10;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* 3. The Main Title (Permission to Think) */
+.podcast-title-image {
+  height: 84px;
+  width: auto;
+  display: block;
+  mix-blend-mode: screen;
+  object-fit: contain;
+}
+
+/* Layout Spacing */
+.podcast-inner {
+  padding: 50px 22px 22px !important;
+}
+
+.podcast-title-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class="site-header">
+<header class="site-header" role="banner">
   <div class="header-inner">
     <div class="brand">
-      <div class="logo-mark">EL</div>
-      <div>
-        <div style="letter-spacing:0.32em;">EQUILIBRIUM</div>
-        <div style="letter-spacing:0.20em; opacity:0.7;">LEDGER</div>
-      </div>
+      <div class="logo-mark" aria-hidden="true">EL</div>
+      <span>Equilibrium Ledger</span>
     </div>
-    <nav class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#framework">Framework</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#publications">Publications</a>
-      <a href="#podcast">Podcast</a>
-      <a href="#giulia">Giulia Trust</a>
-      <a href="#contact">Contact</a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+
+    <nav id="primary-nav" aria-label="Primary navigation">
+      <a href="#research" class="nav-link">Research</a>
+      <a href="#framework" class="nav-link">Ledger Framework</a>
+      <a href="#architecture" class="nav-link">Core Architecture</a>
+      <a href="#publications" class="nav-link">Publications</a>
+      <a href="#path" class="nav-link">Reading Path</a>
+      <a href="#podcast" class="nav-link">Podcast</a>
+      <a href="#lineage" class="nav-link">Lineage</a>
+      <a href="#contact" class="nav-link">Collaborate</a>
     </nav>
-    <a class="pill accent" href="https://zenodo.org/" target="_blank">Zenodo</a>
   </div>
 </header>
 
-<main id="home" class="section hero-section">
+<main id="main-content">
+
+<section class="hero-section" id="research">
+  <div class="hero-content">
+    <h1>Equilibrium Ledger Research</h1>
+    <p>A living research programme for institutions that cannot keep up with reality.</p>
+
+    <div class="micro-statements">
+      <p><strong>Method:</strong> build artefacts, expose contradictions, and publish continuously.</p>
+      <p><strong>Theme:</strong> vertical time versus institutional time.</p>
+      <p><strong>Outcome:</strong> a ledger of systems behaviour, failures, and repair.</p>
+    </div>
+
+    <div class="hero-ctas">
+      <a class="btn primary" href="https://orcid.org/0009-0009-5634-2273" target="_blank" rel="noopener">ORCID Profile</a>
+      <a class="btn secondary" href="https://zenodo.org/communities/equilibrium-ledger" target="_blank" rel="noopener">Zenodo Archive</a>
+      <a class="btn tertiary" href="#publications">Browse papers</a>
+    </div>
+
+    <div class="trust-strip" role="list" aria-label="Quick links">
+      <a href="https://doi.org/10.5281/zenodo.18363404" target="_blank" rel="noopener" role="listitem">
+        <span class="icon" aria-hidden="true">DOI</span>
+        <span>Temporal Apartheid</span>
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.18363419" target="_blank" rel="noopener" role="listitem">
+        <span class="icon" aria-hidden="true">DOI</span>
+        <span>Copy and Paste Society</span>
+      </a>
+      <a href="https://equilibriumledger.org/assets/Equilibrium_Ledger_Asset_Summary_Grassini.pdf" target="_blank" rel="noopener" role="listitem">
+        <span class="icon" aria-hidden="true">PDF</span>
+        <span>Academic asset summary</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="framework">
+  <div class="section-header">
+    <div class="fine-print">Ledger framework</div>
+    <h2>Core hypothesis</h2>
+    <p>Institutions collapse when their internal time cannot match the lived speed of their citizens.</p>
+  </div>
+
+  <div class="two-column">
+    <div class="framework-text">
+      <h3>Equilibrium Ledger</h3>
+      <p>
+        The Ledger maps institutional velocity mismatch, energetic debt, and procedural cruelty.
+        It tracks what breaks, why it breaks, and what an institution must do to survive.
+      </p>
+      <p>
+        View the current asset summary PDF or explore the public Zenodo community.
+      </p>
+      <div class="publication-actions">
+        <a class="btn secondary" href="https://equilibriumledger.org/assets/Equilibrium_Ledger_Asset_Summary_Grassini.pdf" target="_blank" rel="noopener">Asset Summary PDF</a>
+        <a class="btn tertiary" href="https://zenodo.org/communities/equilibrium-ledger" target="_blank" rel="noopener">Zenodo Community</a>
+      </div>
+    </div>
+
+    <figure class="framework-card">
+      <img src="site_assets/salvator_mundi_half.jpg" alt="Salvator Mundi image crop">
+      <figcaption>Ledger navigation begins with the Salvator Mundi: a signal that we are dealing with contested truth.</figcaption>
+      <button class="btn tertiary" type="button" data-modal-target="#asset-modal">Open full size</button>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="architecture">
+  <div class="section-header">
+    <div class="fine-print">Core architecture</div>
+    <h2>Systems and protocols</h2>
+    <p>Key artefacts that make the Ledger actionable. Click the EL icons to open the source on Zenodo.</p>
+  </div>
+
+  <div class="architecture-grid">
+    <article class="architecture-card">
+      <button class="card-icon card-icon-link" type="button" aria-label="Open in Zenodo">EL</button>
+      <h3>King Solomon Protocol</h3>
+      <p>A cross model verification method that treats contradictions as the key data output.</p>
+      <a class="btn secondary btn-zenodo" href="https://doi.org/10.5281/zenodo.18363400" target="_blank" rel="noopener">Open DOI</a>
+    </article>
+
+    <article class="architecture-card">
+      <button class="card-icon card-icon-link" type="button" aria-label="Open in Zenodo">EL</button>
+      <h3>Giulia Assistant</h3>
+      <p>An assistance layer built for vulnerable users, accessibility, and evidence generation.</p>
+      <a class="btn secondary btn-zenodo" href="https://doi.org/10.5281/zenodo.18363394" target="_blank" rel="noopener">Open DOI</a>
+    </article>
+
+    <article class="architecture-card">
+      <button class="card-icon card-icon-link" type="button" aria-label="Open in Zenodo">EL</button>
+      <h3>Turing Theory</h3>
+      <p>When a system outputs correctness but fails at human truth.</p>
+      <a class="btn secondary btn-zenodo" href="https://doi.org/10.5281/zenodo.18363410" target="_blank" rel="noopener">Open DOI</a>
+    </article>
+
+    <article class="architecture-card">
+      <button class="card-icon card-icon-link" type="button" aria-label="Open in Zenodo">EL</button>
+      <h3>Copy and Paste Society</h3>
+      <p>How cultural isomorphism spreads through institutions that only copy.</p>
+      <a class="btn secondary btn-zenodo" href="https://doi.org/10.5281/zenodo.18363419" target="_blank" rel="noopener">Open DOI</a>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="publications">
+  <div class="section-header">
+    <div class="fine-print">Publication stack</div>
+    <h2>Selected papers</h2>
+    <p>Download, cite, or copy DOI strings directly.</p>
+  </div>
+
+  <div class="publication-grid">
+    <article class="publication-card">
+      <h3>Copy and Paste Society</h3>
+      <p>Case study on cultural isomorphism and the 80 20 logic of institutional mimicry.</p>
+      <div class="publication-actions">
+        <a class="btn secondary" href="https://doi.org/10.5281/zenodo.18363419" target="_blank" rel="noopener">Open DOI</a>
+        <button class="btn tertiary copy-doi" type="button" data-doi="10.5281/zenodo.18363419" data-title="Copy and Paste Society">Copy DOI</button>
+      </div>
+    </article>
+
+    <article class="publication-card">
+      <h3>Temporal Apartheid</h3>
+      <p>Critique of academic publishing time, velocity mismatch, and institutional delay.</p>
+      <div class="publication-actions">
+        <a class="btn secondary" href="https://doi.org/10.5281/zenodo.18363404" target="_blank" rel="noopener">Open DOI</a>
+        <button class="btn tertiary copy-doi" type="button" data-doi="10.5281/zenodo.18363404" data-title="Temporal Apartheid">Copy DOI</button>
+      </div>
+    </article>
+
+    <article class="publication-card">
+      <h3>Cognitive Copernicus</h3>
+      <p>Reframing cognition when institutions insist on a single orbit.</p>
+      <div class="publication-actions">
+        <a class="btn secondary" href="https://doi.org/10.5281/zenodo.18363414" target="_blank" rel="noopener">Open DOI</a>
+        <button class="btn tertiary copy-doi" type="button" data-doi="10.5281/zenodo.18363414" data-title="Cognitive Copernicus">Copy DOI</button>
+      </div>
+    </article>
+  </div>
+
+  <div class="citation-tools" aria-label="Citation tools">
+    <label for="citation-format">Citation format</label>
+    <select id="citation-format">
+      <option value="APA" data-copy="Grassini Grimaldi, A. (2024). The Copy and Paste Society. Zenodo. https://doi.org/10.5281/zenodo.18363419">APA</option>
+      <option value="MLA" data-copy="Grassini Grimaldi, Alessandro. The Copy and Paste Society. Zenodo, 2024, doi:10.5281/zenodo.18363419.">MLA</option>
+      <option value="Chicago" data-copy="Grassini Grimaldi, Alessandro. 2024. The Copy and Paste Society. Zenodo. https://doi.org/10.5281/zenodo.18363419.">Chicago</option>
+    </select>
+    <button class="btn tertiary" type="button" id="citation-copy">Copy citation</button>
+  </div>
+</section>
+
+<section class="section" id="path">
+  <div class="section-header">
+    <div class="fine-print">Reading path</div>
+    <h2>How to enter the Ledger</h2>
+    <p>Three steps, one argument, no fluff.</p>
+  </div>
+
+  <div class="reading-path">
+    <ol>
+      <li class="path-step">
+        <span class="badge time-badge">Step 1</span>
+        <h3>Start with the velocity mismatch</h3>
+        <p>Read Temporal Apartheid for the foundational time argument.</p>
+      </li>
+      <li class="path-step">
+        <span class="badge time-badge">Step 2</span>
+        <h3>Move into cultural isomorphism</h3>
+        <p>Copy and Paste Society shows how mimicry spreads when systems cannot think.</p>
+      </li>
+      <li class="path-step">
+        <span class="badge time-badge">Step 3</span>
+        <h3>Apply the protocols</h3>
+        <p>Use the King Solomon Protocol and Giulia Assistant as operational layers.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section podcast-section" id="podcast">
+  <div class="section-header">
+    <div class="fine-print">Podcast</div>
+    <h2>Permission to Think</h2>
+    <p>Short form audio essays. Synthetic studio, voiced characters, and ledger artefacts.</p>
+  </div>
+
   <div class="container">
     <div class="panel">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <div style="letter-spacing:0.32em; font-weight:800; font-size:12px; color:rgba(255,255,255,0.60); margin-bottom:10px;">
-            EQUILIBRIUM LEDGER RESEARCH
+      <div class="podcast-inner">
+        <img class="podcast-top-sign" src="site_assets/podcast_neon.png" alt="Podcast">
+
+        <div class="podcast-grid">
+          <div class="podcast-left">
+            <div class="podcast-title-row">
+              <img class="podcast-logo" src="site_assets/podcast_logo.png" alt="Permission to Think logo">
+              <img class="podcast-title-image" src="site_assets/permission_to_think_title_neon.png" alt="Permission to Think">
+            </div>
+
+            <p class="lead podcast-lead">
+              Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi, translated into lived navigation.
+            </p>
+
+            <div class="grid3 podcast-cards">
+              <div class="card">
+                <h3>Episodes</h3>
+                <p>Micro essays, case studies, and field notes from the ledger.</p>
+              </div>
+              <div class="card">
+                <h3>Formats</h3>
+                <p>Audio, transcripts, and structured summaries for accessibility.</p>
+              </div>
+              <div class="card">
+                <h3>Distribution</h3>
+                <p>Spotify, YouTube, and on page listening with a simple episode tile.</p>
+              </div>
+            </div>
+
+            <div class="episode-grid" aria-label="Latest episodes">
+              <article class="episode-card">
+                <h3>Episode 1, Title to be announced</h3>
+                <p>4 to 5 minutes, Article</p>
+                <div class="episode-actions">
+                  <button class="btn tertiary episode-tile" type="button" data-audio="episode1-audio" aria-expanded="false">Listen</button>
+                </div>
+                <div class="audio-wrap" id="episode1-audio" aria-hidden="true">
+                  <audio controls preload="none">
+                    <source src="site_assets/audio/episode1.mp3" type="audio/mpeg">
+                  </audio>
+                </div>
+              </article>
+
+              <article class="episode-card">
+                <h3>Episode 2, Title to be announced</h3>
+                <p>4 to 5 minutes, Proposal</p>
+                <div class="episode-actions">
+                  <button class="btn tertiary episode-tile" type="button" data-audio="episode2-audio" aria-expanded="false">Listen</button>
+                </div>
+                <div class="audio-wrap" id="episode2-audio" aria-hidden="true">
+                  <audio controls preload="none">
+                    <source src="site_assets/audio/episode2.mp3" type="audio/mpeg">
+                  </audio>
+                </div>
+              </article>
+
+              <article class="episode-card">
+                <h3>Episode 3, Title to be announced</h3>
+                <p>4 to 5 minutes, Manuscript</p>
+                <div class="episode-actions">
+                  <button class="btn tertiary episode-tile" type="button" data-audio="episode3-audio" aria-expanded="false">Listen</button>
+                </div>
+                <div class="audio-wrap" id="episode3-audio" aria-hidden="true">
+                  <audio controls preload="none">
+                    <source src="site_assets/audio/episode3.mp3" type="audio/mpeg">
+                  </audio>
+                </div>
+              </article>
+            </div>
+
+            <p class="lineage-note">Launch week, three episodes, then one episode weekly.</p>
           </div>
-          <div class="h1">Alessandro Grassini Grimaldi
-            <span style="display:block; font-size:20px; color:var(--muted); font-weight:400; margin-top:10px;">
-              Independent Researcher, Founder of the Equilibrium Ledger Framework
-            </span>
+
+          <div class="podcast-right">
+            <figure class="framework-card">
+              <img src="site_assets/podcast_room.jpg" alt="Synthetic studio image with neon sign and microphones">
+              <figcaption>Synthetic studio image. Alex and Giulia are voiced characters, not real persons.</figcaption>
+            </figure>
           </div>
-          <p style="color:var(--muted); font-size:1.1rem; margin:20px 0;">
-            Modern institutions optimise for procedural speed.<br>
-            Human knowledge develops through temporal depth.<br>
-            The Equilibrium Ledger reconciles this structural asymmetry.
-          </p>
-          <div class="hero-actions" style="display:flex; gap:10px; margin-top:20px;">
-            <a class="pill gold" href="#reading">Reading Path</a>
-            <a class="pill" href="https://zenodo.org/" target="_blank">Zenodo Community</a>
-            <a class="pill" href="https://orcid.org/0009-0009-5634-2273" target="_blank">ORCID</a>
-          </div>
-        </div>
-        <div class="hero-art">
-          <img src="salvator_mundi.jpg" alt="Salvator Mundi">
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<section class="section" id="lineage">
+  <div class="section-header">
+    <div class="fine-print">Lineage</div>
+    <h2>The School of Athens</h2>
+    <p>When knowledge becomes architecture.</p>
+  </div>
+
+  <figure class="lineage-figure">
+    <img src="site_assets/school_of_athens.jpg" alt="Raphael, The School of Athens">
+    <figcaption>Raphael’s School of Athens, used here as a symbolic anchor for synthesis and intellectual inheritance.</figcaption>
+    <p class="lineage-note">This is not decoration. It is a statement about lineage, proof, and the right to think.</p>
+  </figure>
+</section>
+
+<section class="section" id="contact">
+  <div class="section-header">
+    <div class="fine-print">Collaborate</div>
+    <h2>Talk to the Ledger</h2>
+    <p>Academic, institutional, or media collaborations. Email only.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <h3>Direct</h3>
+      <p>Email only communication, please reply in writing.</p>
+      <p><a href="mailto:contact@equilibriumledger.org">contact@equilibriumledger.org</a></p>
+      <p><strong>ORCID</strong> <a href="https://orcid.org/0009-0009-5634-2273" target="_blank" rel="noopener">0009 0009 5634 2273</a></p>
+    </div>
+
+    <div class="contact-card">
+      <h3>Send a message</h3>
+      <form id="collab-form">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" autocomplete="name" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="organisation">Organisation</label>
+          <input id="organisation" name="organisation" required>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <div class="checkbox-row">
+          <input id="consent" name="consent" type="checkbox" required>
+          <label for="consent">I consent to being contacted about this enquiry.</label>
+        </div>
+        <button class="btn primary" type="submit">Send</button>
+        <p id="form-feedback" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<section id="framework" class="section">
-  <div class="container">
-    <div class="panel">
-      <div class="split reverse">
-        <div class="media">
-          <img src="Framework1.jpg" style="border-radius:20px;" alt="Framework Structure">
-        </div>
-        <div>
-          <div class="card">
-            <div style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; margin-bottom:10px; color:var(--muted);">Research Centre</div>
-            <h2 style="margin-top:0">A research framework for institutional time</h2>
-            <p style="color:var(--muted);">The Equilibrium Ledger Research centre operates as a compact academic atelier that blends museum grade restraint with engineered clarity.</p>
-          </div>
-          <div class="card" style="margin-top:18px">
-            <h3>Dual temporal axes</h3>
-            <p style="color:var(--muted); font-size:0.9rem;">The Ledger runs on two axes: a procedural axis charting governmental velocity, and a temporal axis registering the accrued depth of knowledge.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="architecture" class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="fine-print">Core architecture</p>
-      <h2>The modular pillars of the Equilibrium Ledger</h2>
-    </div>
-    <div class="architecture-grid">
-      <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Temporal Architecture of Cognition</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">A Dual Axis Framework for Human and Synthetic Meaning.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-      <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Vertical Time Diagnostic</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">Empirical Demonstration of Cognitive Flattening in AI.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-      <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Turing Theory and the Law of the Dead Asset</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">Institutional Time, Cognitive Risk, and Erasure.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-      <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Quantum Boomerang Architecture</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">Human Energetics and Institutional Bifurcation.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-      <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Cellophane State</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">From Density to Abstraction in Governance.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-       <article class="architecture-card">
-        <div class="card-icon">EL</div>
-        <h3>The Roadrunner Loop in Art History</h3>
-        <p style="font-size:0.85rem; color:var(--muted);">Visual lineage and institutional time loops.</p>
-        <div class="publication-actions"><a class="btn" href="https://zenodo.org/" target="_blank">Read</a></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="publications" class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="fine-print">Selected Publications</p>
-      <h2>DOI-curated entries</h2>
-    </div>
-    <div class="architecture-grid">
-      <article class="publication-card">
-        <h3>The Equilibrium Ledger Thesis Proposal</h3>
-        <p style="font-size:0.9rem; color:var(--muted);">A Temporal Framework for Cognitive, Institutional, and Synthetic Stability.</p>
-        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
-      </article>
-      <article class="publication-card">
-        <h3>The King Solomon Protocol</h3>
-        <p style="font-size:0.9rem; color:var(--muted);">Framework for Human Supervised Arbitration in Multi Model AI.</p>
-        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
-      </article>
-      <article class="publication-card">
-        <h3>The Leonardo Paradox</h3>
-        <p style="font-size:0.9rem; color:var(--muted);">Neurodivergent Cognitive Architecture in Elite Universities.</p>
-        <div class="publication-actions"><a class="btn primary" href="https://zenodo.org/">Read on Zenodo</a></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="reading" class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="fine-print">Canonical Reading Pathway</p>
-      <h2>Guided entry to the ledger</h2>
-    </div>
-    <div class="grid3">
-      <div class="card">
-        <span class="badge">Step 1</span>
-        <h3>The Literary Ledger</h3>
-        <p style="color:var(--muted); font-size:0.9rem;">A long form literary descent through memory, power, and cultural aftermath.</p>
-        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 27 min</span>
-      </div>
-      <div class="card">
-        <span class="badge">Step 2</span>
-        <h3>The Visual Ledger</h3>
-        <p style="color:var(--muted); font-size:0.9rem;">A visual lineage reading of art history as institutional time.</p>
-        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 18 min</span>
-      </div>
-      <div class="card">
-        <span class="badge">Step 3</span>
-        <h3>The Architecture of Thought</h3>
-        <p style="color:var(--muted); font-size:0.9rem;">The School of Athens as a visual proto model for the ledger.</p>
-        <span class="badge time-badge" style="border-color:var(--gold); color:var(--gold); margin-top:10px;">Est. 22 min</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="manuscripts" class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="fine-print">MANUSCRIPTS</div>
-      <h2>Writing Across Time, Memory, and Human Pattern</h2>
-    </div>
-    <div class="cards-grid">
-      <article class="card manuscript-card">
-        <img src="voices_cover.png" class="manuscript-cover" alt="Voices Cover">
-        <div>
-          <h3>Voices Against Oblivion</h3>
-          <p style="font-size:0.9rem; color:var(--muted);">A Dantean journey through Naples and the great figures of European history.</p>
-          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
-        </div>
-      </article>
-      <article class="card manuscript-card">
-        <img src="Audhd_cover.png" class="manuscript-cover" alt="AuDHD Cover">
-        <div>
-          <h3>I Am Not Crazy, I Have Just Got ADHD</h3>
-          <p style="font-size:0.9rem; color:var(--muted);">A personal yet structurally analytical memoir exploring neurodivergence.</p>
-          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
-        </div>
-      </article>
-      <article class="card manuscript-card">
-        <img src="experiment_cover.png" class="manuscript-cover" alt="Experiment Cover">
-        <div>
-          <h3>You Were The Experiment</h3>
-          <p style="font-size:0.9rem; color:var(--muted);">Speculative fiction on memory, loops, and emotional autonomy.</p>
-          <a href="#" class="pill" style="margin-top:10px; font-size:0.7rem;">Read PDF</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="giulia" class="section">
-  <div class="container">
-    <div class="panel">
-      <div class="split">
-        <div>
-          <h2 style="margin-top:0">Giulia Trust</h2>
-          <p class="lead" style="color:var(--text); font-size:1.1rem;">
-            Founded by Alessandro in honour of his mother, Giulia. The trust centres neurodivergent people and their families.
-          </p>
-          <div class="grid3" style="margin-top:20px;">
-            <div class="card"><h3>Navigation clinic</h3><p style="font-size:0.85rem; color:var(--muted);">One to one guidance.</p></div>
-            <div class="card"><h3>Documentation</h3><p style="font-size:0.85rem; color:var(--muted);">Plain language templates.</p></div>
-            <div class="card"><h3>Training</h3><p style="font-size:0.85rem; color:var(--muted);">Institutional briefings.</p></div>
-          </div>
-        </div>
-        <div class="media">
-          <img src="framework3.jpeg" alt="Equilibrium Ledger tower">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="podcast" class="section">
-  <div class="container podcast-section">
-    <div class="panel">
-      
-      <img class="podcast-top-sign" src="podcast_neon.png" alt="Podcast">
-
-      <div class="podcast-grid">
-        <div class="podcast-left">
-          
-          <div class="podcast-title-row">
-            <img class="podcast-logo" src="podcast_logo.png" alt="Logo">
-            <img class="podcast-title-image" src="permission_to_think_title_neon.png" alt="Permission to Think">
-          </div>
-
-          <p class="lead" style="color:var(--muted); font-size:1.1rem;">
-            Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi.
-          </p>
-
-          <div class="grid3" style="margin:30px 0;">
-            <div class="card"><h3>Episodes</h3><p style="font-size:0.9rem; color:var(--muted);">Micro essays and notes.</p></div>
-            <div class="card"><h3>Formats</h3><p style="font-size:0.9rem; color:var(--muted);">Audio and transcripts.</p></div>
-            <div class="card"><h3>Distribution</h3><p style="font-size:0.9rem; color:var(--muted);">Spotify and YouTube.</p></div>
-          </div>
-
-          <div class="episode-list">
-            <button class="episode-tile">
-              <img src="podcast_logo.png" alt="">
-              <div>
-                <div style="font-weight:700;">Episode 1: Title to be announced</div>
-                <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Article</div>
-              </div>
-            </button>
-            <button class="episode-tile">
-              <img src="podcast_logo.png" alt="">
-              <div>
-                <div style="font-weight:700;">Episode 2: Title to be announced</div>
-                <div style="font-size:0.85rem; color:var(--muted);">4 to 5 minutes, Proposal</div>
-              </div>
-            </button>
-          </div>
-          
-          <div style="margin-top:20px; display:flex; gap:10px;">
-            <a href="#" class="pill accent">Spotify</a>
-            <a href="#" class="pill">YouTube</a>
-          </div>
-        </div>
-
-        <div class="podcast-right">
-          <figure style="margin:0;">
-            <img src="podcast_studio.png" style="border-radius:18px; border:1px solid rgba(255,255,255,0.1);" alt="Studio">
-            <figcaption style="font-size:0.8rem; color:var(--muted); margin-top:8px;">Synthetic studio image. Alex and Giulia are voiced characters.</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer id="contact" class="footer">
-  <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
-      <div>
-        <div style="font-weight:700; font-size:1.2rem; margin-bottom:5px;">Alessandro Grassini Grimaldi</div>
-        <div style="color:var(--muted);">info@giuliatrust.org</div>
-      </div>
-      <div style="display:flex; gap:15px;">
-        <a href="#framework">Framework</a>
-        <a href="#publications">Publications</a>
-        <a href="https://zenodo.org/">Zenodo</a>
-      </div>
-    </div>
-  </div>
+<footer class="site-footer" role="contentinfo">
+  <p>Equilibrium Ledger Research</p>
+  <p>Alessandro Grassini Grimaldi</p>
+  <p>Email only, please reply in writing</p>
 </footer>
+
+<div class="floating-archive" aria-label="Floating quick links">
+  <a href="https://zenodo.org/communities/equilibrium-ledger" target="_blank" rel="noopener">Zenodo archive</a>
+  <a href="#research">Back to top</a>
+</div>
+
+<div class="modal" id="asset-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modal-title">Salvator Mundi</h3>
+      <button class="modal-close" type="button" aria-label="Close modal">Close</button>
+    </div>
+    <p><img src="site_assets/salvator_mundi_full.jpg" alt="Full Salvator Mundi image" style="width:100%;border-radius:20px;display:block;"></p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://equilibriumledger.org/#person","name":"Alessandro Grassini Grimaldi","url":"https://equilibriumledger.org","sameAs":["https://orcid.org/0009-0009-5634-2273","https://zenodo.org/communities/equilibrium-ledger"],"jobTitle":"Founder, Equilibrium Ledger and Giulia system","description":"Independent researcher focused on institutional velocity mismatch and accessibility."},{"@type":"WebSite","@id":"https://equilibriumledger.org/#website","name":"Equilibrium Ledger Research","url":"https://equilibriumledger.org","publisher":{"@id":"https://equilibriumledger.org/#person"}},{"@type":"CreativeWork","@id":"https://equilibriumledger.org/publication/copy-and-paste-society","name":"The Copy and Paste Society","description":"Examines cultural isomorphism and institutional mimicry using the Ledger framework.","datePublished":"2024-05-15","url":"https://doi.org/10.5281/zenodo.18363419","doi":"10.5281/zenodo.18363419","isBasedOn":"https://doi.org/10.5281/zenodo.18363419","publisher":{"@type":"Organization","name":"Equilibrium Ledger Research"},"author":{"@id":"https://equilibriumledger.org/#person"}},{"@type":"CreativeWork","@id":"https://equilibriumledger.org/publication/temporal-apartheid","name":"The Temporal Apartheid of Academic Publishing: A Critique of Institutional Velocity Mismatch","description":"Investigates the mismatch between institutional velocity and knowledge production rhythms.","datePublished":"2024-03-05","url":"https://doi.org/10.5281/zenodo.18363404","doi":"10.5281/zenodo.18363404","isBasedOn":"https://doi.org/10.5281/zenodo.18363404","publisher":{"@type":"Organization","name":"Equilibrium Ledger Research"},"author":{"@id":"https://equilibriumledger.org/#person"}},{"@type":"PodcastSeries","@id":"https://equilibriumledger.org/podcast#series","name":"Permission to Think","url":"https://equilibriumledger.org/podcast","description":"Don’t be afraid to use your brain.","image":"https://equilibriumledger.org/assets/salvator_mundi.jpg","publisher":{"@type":"Organization","name":"Equilibrium Ledger Research"},"episode":[{"@id":"https://equilibriumledger.org/podcast#episode1"},{"@id":"https://equilibriumledger.org/podcast#episode2"},{"@id":"https://equilibriumledger.org/podcast#episode3"}]},{"@type":"PodcastEpisode","@id":"https://equilibriumledger.org/podcast#episode1","partOfSeries":{"@id":"https://equilibriumledger.org/podcast#series"},"name":"Permission to Think Episode 1: Temporal Virtues","description":"Giulia and Alex trace the Ledger’s origin story while measuring the temporal virtues of institutions.","datePublished":"2024-04-10","url":"https://equilibriumledger.org/podcast#episode1","episodeNumber":1,"associatedMedia":{"@type":"MediaObject","contentUrl":"https://open.spotify.com/episode/placeholder1"}},{"@type":"PodcastEpisode","@id":"https://equilibriumledger.org/podcast#episode2","partOfSeries":{"@id":"https://equilibriumledger.org/podcast#series"},"name":"Permission to Think Episode 2: Protocol Coffee","description":"An improvised conversation on the King Solomon Protocol and human supervision.","datePublished":"2024-04-17","url":"https://equilibriumledger.org/podcast#episode2","episodeNumber":2,"associatedMedia":{"@type":"MediaObject","contentUrl":"https://open.spotify.com/episode/placeholder2"}},{"@type":"PodcastEpisode","@id":"https://equilibriumledger.org/podcast#episode3","partOfSeries":{"@id":"https://equilibriumledger.org/podcast#series"},"name":"Permission to Think Episode 3: Lineage & Synthesis","description":"Contemplative notes on the School of Athens, synthesis, and institutional order.","datePublished":"2024-04-24","url":"https://equilibriumledger.org/podcast#episode3","episodeNumber":3,"associatedMedia":{"@type":"MediaObject","contentUrl":"https://open.spotify.com/episode/placeholder3"}}]}
+</script>
+<script>
+(() => {
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  const header = document.querySelector('.site-header');
+  const floating = document.querySelector('.floating-archive');
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const showToast = (message) => {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 2800);
+  };
+  const copyText = (text, label) => {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => showToast(${label} copied to clipboard)).catch(() => showToast(Unable to copy ${label}));
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast(${label} copied to clipboard);
+      } catch {
+        showToast(Unable to copy ${label});
+      }
+      document.body.removeChild(textarea);
+    }
+  };
+  const updateFloating = () => {
+    if (!floating) return;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const maxScroll = Math.max(scrollHeight - window.innerHeight, 0);
+    const threshold = Math.max(maxScroll * 0.5, window.innerHeight * 0.5);
+    floating.classList.toggle('visible', window.scrollY > threshold);
+  };
+  const onScroll = () => {
+    if (header) {
+      header.classList.toggle('scrolled', window.scrollY > 30);
+    }
+    updateFloating();
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      if (!nav) return;
+      const isOpen = nav.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+  document.querySelectorAll('#primary-nav a').forEach(link => {
+    link.addEventListener('click', (event) => {
+      const targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        event.preventDefault();
+        const target = document.querySelector(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+        }
+      }
+      if (nav && nav.classList.contains('is-open')) {
+        nav.classList.remove('is-open');
+        navToggle?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+  document.querySelectorAll('.copy-doi').forEach(button => {
+    button.addEventListener('click', () => {
+      copyText(button.dataset.doi, button.dataset.title || 'DOI');
+    });
+  });
+  document.getElementById('citation-copy')?.addEventListener('click', () => {
+    const select = document.getElementById('citation-format');
+    const selected = select?.selectedOptions?.[0];
+    if (selected) {
+      copyText(selected.dataset.copy || selected.value, ${selected.textContent.trim()} citation);
+    }
+  });
+  const modal = document.getElementById('asset-modal');
+  const modalOpeners = document.querySelectorAll('[data-modal-target]');
+  const modalClose = modal?.querySelector('.modal-close');
+  let lastFocused = null;
+  const focusableSelectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+  let focusableElements = [];
+  let firstFocusable = null;
+  let lastFocusableElement = null;
+  const setFocusableElements = () => {
+    if (!modal) return;
+    focusableElements = Array.from(modal.querySelectorAll(focusableSelectors)).filter(el => el.offsetParent !== null);
+    firstFocusable = focusableElements[0] || null;
+    lastFocusableElement = focusableElements[focusableElements.length - 1] || null;
+  };
+  const openModal = () => {
+    if (!modal) return;
+    lastFocused = document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    setFocusableElements();
+    (firstFocusable || modal)?.focus();
+  };
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    lastFocused?.focus();
+  };
+  modalOpeners.forEach(opener => opener.addEventListener('click', openModal));
+  modalClose?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal?.classList.contains('open')) {
+      closeModal();
+    }
+    if (event.key === 'Tab' && modal?.classList.contains('open')) {
+      if (!firstFocusable || !lastFocusableElement) {
+        event.preventDefault();
+        return;
+      }
+      if (event.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          lastFocusableElement.focus();
+          event.preventDefault();
+        }
+      } else if (document.activeElement === lastFocusableElement) {
+        firstFocusable.focus();
+        event.preventDefault();
+      }
+    }
+  });
+  const contactForm = document.getElementById('collab-form');
+  const formFeedback = document.getElementById('form-feedback');
+  contactForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const requiredFields = ['name', 'email', 'organisation', 'message', 'consent'];
+    const data = new FormData(contactForm);
+    const missing = requiredFields.filter(name => {
+      if (name === 'consent') return !contactForm.querySelector('input[name="consent"]')?.checked;
+      return !data.get(name)?.toString().trim();
+    });
+    if (missing.length) {
+      if (formFeedback) {
+        formFeedback.textContent = 'All fields are required, including consent.';
+        formFeedback.style.color = '#C9A85C';
+      }
+      return;
+    }
+    if (formFeedback) {
+      formFeedback.textContent = 'Message received. Expect a reply within five working days.';
+      formFeedback.style.color = '#00C7FF';
+    }
+    contactForm.reset();
+  });
+
+  const architectureCards = document.querySelectorAll('.architecture-card');
+  architectureCards.forEach((card) => {
+    const icon = card.querySelector('.card-icon-link');
+    const link = card.querySelector('a.btn-zenodo');
+    if (!icon || !link) return;
+    icon.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.open(link.href, '_blank', 'noopener');
+    });
+  });
+
+  document.querySelectorAll('.episode-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const audioId = tile.getAttribute('data-audio');
+      if (!audioId) return;
+      const audio = document.getElementById(audioId);
+      if (!audio) return;
+      const isOpen = audio.classList.toggle('is-open');
+      tile.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        audio.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+      }
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
