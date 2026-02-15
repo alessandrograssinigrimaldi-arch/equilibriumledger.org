@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equilibrium Ledger</title>
+
+  <style>
+    :root{
+      --bg: #070a10;
+      --panel: rgba(255,255,255,0.05);
+      --panel2: rgba(255,255,255,0.03);
+      --line: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --accent: #f2b84b;
+      --accent2: #2fb7c8;
+      --radius: 18px;
+      --shadow: 0 14px 50px rgba(0,0,0,0.45);
+    }
+
+    html, body{
+      height: 100%;
+      margin: 0;
+      background:
+        radial-gradient(1200px 800px at 50% -10%, rgba(47,183,200,0.12), transparent 55%),
+        radial-gradient(900px 700px at 85% 15%, rgba(242,184,75,0.10), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px 18px 90px 18px;
+    }
+
+    /* Navigation */
+    .nav{
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+    }
+
+    .navLeft{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+    }
+
+    .brandMark{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      font-size: 12px;
+    }
+
+    .brandText{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brandText strong{
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .brandText span{
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .navLinks{
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .navLinks a{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .navLinks a:hover{
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      text-decoration: none;
+    }
+
+    .navRight{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 230px;
+      justify-content: flex-end;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(47,183,200,0.45);
+      background: rgba(47,183,200,0.10);
+      color: var(--text);
+      font-weight: 650;
+      font-size: 13px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .pill:hover{ text-decoration: none; filter: brightness(1.06); }
+
+    /* Sections */
+    .section{
+      margin-top: 34px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(0,0,0,0.20);
+      box-shadow: var(--shadow);
+    }
+
+    .sectionHeader{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .kicker{
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.62);
+    }
+
+    h1, h2{
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    h1{ font-size: 44px; }
+    h2{ font-size: 28px; }
+
+    p{
+      margin: 10px 0 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .gridTwo{
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 980px){
+      .gridTwo{ grid-template-columns: 1fr; }
+      h1{ font-size: 36px; }
+    }
+
+    .panel{
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-weight: 650;
+      font-size: 13px;
+    }
+
+    .btn:hover{ text-decoration: none; filter: brightness(1.08); }
+
+    .btnAccent{
+      border: 1px solid rgba(242,184,75,0.55);
+      background: rgba(242,184,75,0.14);
+    }
+
+    .btnCyan{
+      border: 1px solid rgba(47,183,200,0.55);
+      background: rgba(47,183,200,0.12);
+    }
+
+    /* Frames */
+    .frame{
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .frame img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .wideFrame{
+      margin-top: 22px;
+      border-radius: 22px;
+    }
+
+    .giuliaVisuals{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media(min-width:1100px){
+      .giuliaVisuals{ grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Cards */
+    .cardGrid{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 1100px){
+      .cardGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px){
+      .cardGrid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 210px;
+    }
+
+    .card h3{
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .card p{
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.70);
+      line-height: 1.5;
+    }
+
+    .card .actions{ margin-top: auto; }
+
+    /* Books */
+    .booksGrid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 980px){
+      .booksGrid{ grid-template-columns: 1fr; }
+    }
+
+    .book{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 640px){
+      .book{ grid-template-columns: 1fr; }
+    }
+
+    .bookTitle{
+      font-weight: 800;
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .small{
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .footerNote{
+      margin-top: 18px;
+      color: rgba(255,255,255,0.65);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="nav">
+      <div class="navLeft">
+        <div class="brandMark">EL</div>
+        <div class="brandText">
+          <strong>Equilibrium Ledger</strong>
+          <span>Research and public artefacts</span>
+        </div>
+      </div>
+
+      <nav class="navLinks" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#framework">Framework</a>
+        <a href="#reading">Reading Path</a>
+        <a href="#publications">Publications</a>
+        <a href="#podcast">Podcast</a>
+        <a href="#giulia">Giulia Trust</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="navRight">
+        <a class="pill" href="#publications">Zenodo</a>
+      </div>
+    </header>
+
+    <section id="home" class="section">
+      <div class="gridTwo">
+        <div>
+          <div class="kicker">Equilibrium Ledger Research</div>
+          <h1>Alessandro Grassini Grimaldi<br>Independent Researcher,<br>Founder of the Equilibrium Ledger Framework</h1>
+
+          <p>Modern institutions optimise for procedural speed. Human knowledge develops through temporal depth. The Equilibrium Ledger reconciles this structural asymmetry.</p>
+
+          <div class="panel" style="margin-top:16px">
+            <div class="kicker" style="margin-bottom:6px">Manifesto</div>
+            <p style="margin:0">The ledger sustains collective memory, calibrates trust in institutional time, and provides a precise apparatus for worldbuilding. Every datum is indexed, every decision is accountable, and every reader is invited into rigorous, diplomatic contemplation.</p>
+
+            <div class="actions">
+              <a class="btn btnCyan" href="#reading">Reading Path</a>
+              <a class="btn" href="#publications">Zenodo Community</a>
+              <a class="btn" href="https://orcid.org/0009-0009-5634-2273" target="_blank" rel="noopener">ORCID</a>
+              <a class="btn" href="#publications">Scholar</a>
+            </div>
+
+            <p class="footerNote">For Giulia Trust, email info@giuliatrust.org. For GeoTrust, email info@geotrust.org.</p>
+          </div>
+        </div>
+
+        <div class="frame" aria-label="Equilibrium Ledger Framework image">
+          <img src="EL.PNG" alt="Equilibrium Ledger Framework">
+        </div>
+      </div>
+    </section>
+
+    <section id="framework" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Framework</div>
+          <h2>The core architecture</h2>
+        </div>
+      </div>
+
+      <div class="gridTwo">
+        <div class="panel">
+          <p style="margin-top:0">The framework is built to make institutional assumptions legible. It treats publication, compliance, and memory as a single system, then tests that system under speed, scarcity, and adversarial conditions.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#publications">Open publications</a>
+            <a class="btn" href="#podcast">Listen path</a>
+          </div>
+        </div>
+
+        <div class="frame">
+          <img src="salvator_mundi.jpg" alt="Concept visual">
+        </div>
+      </div>
+    </section>
+
+    <section id="reading" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Reading path</div>
+          <h2>Suggested entry points</h2>
+        </div>
+      </div>
+
+      <div class="cardGrid">
+        <div class="card">
+          <h3>Start with the thesis proposal</h3>
+          <p>A compact map of the problem, method, and empirical trajectory.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#publications">Read on Zenodo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Then the King Solomon Protocol</h3>
+          <p>Human supervised arbitration in multi model AI systems.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#publications">Read on Zenodo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Then the Leonardo Paradox</h3>
+          <p>Neurodivergent cognitive architecture and institutional containment.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#publications">Read on Zenodo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Then Temporal Apartheid</h3>
+          <p>Institutional velocity mismatch and disabled knowledge flows.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#publications">Read on Zenodo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Selected publications</div>
+          <h2>DOI curated entries</h2>
+        </div>
+      </div>
+
+      <div class="cardGrid">
+        <div class="card">
+          <h3>The Equilibrium Ledger: A Temporal Framework for Cognitive, Institutional, and Synthetic Stability</h3>
+          <p>A doctoral thesis proposal and working paper with preliminary evidence.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#">Read on Zenodo</a>
+            <a class="btn btnCyan" href="#">Copy DOI</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>The King Solomon Protocol: A Framework for Human Supervised Arbitration in Multi Model Artificial Intelligence Systems</h3>
+          <p>Framework for human led supervision of multi model arbitration loops.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#">Read on Zenodo</a>
+            <a class="btn btnCyan" href="#">Copy DOI</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>The Leonardo Paradox: Neurodivergent Cognitive Architecture and the Institutional Containment Problem in Elite University Selection Systems</h3>
+          <p>Neurodivergent cognition and selection architecture inside elite universities.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#">Read on Zenodo</a>
+            <a class="btn btnCyan" href="#">Copy DOI</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>The Temporal Apartheid of Academic Publishing: A Critique of Institutional Velocity Mismatch</h3>
+          <p>Critique of how institutional velocity mismatches disable knowledge flows.</p>
+          <div class="actions">
+            <a class="btn btnAccent" href="#">Read on Zenodo</a>
+            <a class="btn btnCyan" href="#">Copy DOI</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame wideFrame" aria-label="Equilibrium Ledger visual architecture">
+        <img src="EL1.PNG" alt="Equilibrium Ledger visual architecture">
+      </div>
+
+      <div class="actions" style="margin-top:18px">
+        <a class="btn btnCyan" href="#">Copy citation</a>
+        <a class="btn" href="#">View the full archive in the Zenodo community</a>
+      </div>
+    </section>
+
+    <section id="podcast" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Podcast</div>
+          <h2>Permission To Think</h2>
+        </div>
+      </div>
+
+      <div class="gridTwo">
+        <div class="panel">
+          <p style="margin-top:0">Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi, translated into lived navigation.</p>
+
+          <div class="cardGrid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top:14px">
+            <div class="card" style="min-height:140px">
+              <h3>Episodes</h3>
+              <p>Micro essays, case studies, and field notes from the ledger.</p>
+            </div>
+            <div class="card" style="min-height:140px">
+              <h3>Formats</h3>
+              <p>Audio, transcripts, and structured summaries for accessibility.</p>
+            </div>
+            <div class="card" style="min-height:140px">
+              <h3>Distribution</h3>
+              <p>Spotify, YouTube, and on page listening with a simple episode title.</p>
+            </div>
+          </div>
+
+          <p class="footerNote">Synthetic studio image. Alex and Giulia are voiced characters, not real persons.</p>
+
+          <div class="actions">
+            <a class="btn btnAccent" href="#">Spotify</a>
+            <a class="btn btnAccent" href="#">YouTube</a>
+          </div>
+        </div>
+
+        <div class="frame">
+          <img src="podcast_studio.png" alt="Permission To Think studio">
+        </div>
+      </div>
+    </section>
+
+    <section id="giulia" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Giulia Trust</div>
+          <h2>Navigation, documentation, advocacy</h2>
+        </div>
+      </div>
+
+      <div class="gridTwo">
+        <div class="panel">
+          <p style="margin-top:0">Founded by Alessandro in honour of his mother, Giulia. The trust centres neurodivergent people and their families as they navigate modern institutional bureaucracy with clarity, protection, and humane process design.</p>
+
+          <div class="cardGrid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top:14px">
+            <div class="card" style="min-height:150px">
+              <h3>Navigation clinic</h3>
+              <p>One to one guidance through forms, appointments, and timelines.</p>
+            </div>
+            <div class="card" style="min-height:150px">
+              <h3>Documentation commons</h3>
+              <p>Plain language templates and checklists for critical submissions.</p>
+            </div>
+            <div class="card" style="min-height:150px">
+              <h3>Advocacy and training</h3>
+              <p>Institutional briefings and practitioner workshops grounded in the ledger.</p>
+            </div>
+          </div>
+
+          <p class="footerNote">Contact: info@giuliatrust.org</p>
+        </div>
+
+        <div class="giuliaVisuals">
+          <div class="frame">
+            <img src="EL2.PNG" alt="Giulia Trust visual 1">
+          </div>
+          <div class="frame">
+            <img src="EL3.PNG" alt="Giulia Trust visual 2">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="sectionHeader">
+        <div>
+          <div class="kicker">Contact</div>
+          <h2>Reach the project</h2>
+        </div>
+      </div>
+
+      <div class="gridTwo">
+        <div class="panel">
+          <p style="margin-top:0">Email only, please reply in writing.</p>
+          <div class="actions">
+            <a class="btn btnCyan" href="mailto:info@giuliatrust.org">info@giuliatrust.org</a>
+            <a class="btn" href="mailto:info@geotrust.org">info@geotrust.org</a>
+          </div>
+          <p class="footerNote">ORCID: 0009-0009-5634-2273</p>
+        </div>
+        <div class="panel">
+          <p style="margin-top:0">If an image does not load, confirm the filename is identical, including capitals. GitHub Pages is case sensitive.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
