@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Equilibrium Ledger Research</title>
 <style>
-/* --- 1. CORE VISUALS --- */
+/* --- 1. VISUAL DNA (Dark Mode + Gold/Cyan) --- */
 :root {
   --bg: #0A0B0D;
   --text: #F2F4F6;
@@ -23,6 +23,7 @@ html { scroll-behavior:smooth; }
 body {
   margin: 0;
   background-color: var(--bg);
+  /* The Index 3 Gradient Background */
   background-image: 
     radial-gradient(circle at 20% 10%, rgba(90,200,250,0.12), transparent 55%),
     radial-gradient(circle at 80% 30%, rgba(255,200,80,0.10), transparent 50%);
@@ -37,18 +38,19 @@ img { max-width: 100%; display: block; }
 /* --- 2. THE BIG FRAMES (Panels) --- */
 .container { max-width:1200px; margin:0 auto; padding:0 22px; }
 
+/* This is the FRAME for every block */
 .panel {
   border: 1px solid rgba(255,255,255,0.10);
   background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
   border-radius: var(--radius);
-  box-shadow: 0 28px 70px rgba(0,0,0,0.45);
+  box-shadow: 0 28px 70px rgba(0,0,0,0.45); /* Heavy Drop Shadow */
   padding: 40px;
   position: relative;
   overflow: visible;
-  margin-bottom: 40px;
+  margin-bottom: 40px; /* Space between blocks */
 }
 
-/* --- 3. THE INNER BLOCKS (Cards) --- */
+/* --- 3. INNER CARDS --- */
 .card {
   background: var(--card);
   border: 1px solid rgba(255,255,255,0.08);
@@ -60,7 +62,8 @@ img { max-width: 100%; display: block; }
   justify-content: space-between;
 }
 
-/* Specific Image Fits */
+/* --- 4. IMAGE FIT UTILITIES --- */
+/* Hero Image Fit */
 .hero-art { 
   border-radius: 20px; 
   overflow: hidden; 
@@ -71,23 +74,19 @@ img { max-width: 100%; display: block; }
 }
 .hero-art img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Giulia Trust Double Images */
-.giulia-media {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.giulia-media img {
+/* Giulia Trust Stacked Images */
+.giulia-stack { display: flex; flex-direction: column; gap: 20px; }
+.giulia-stack img {
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.1);
   width: 100%;
   object-fit: cover;
 }
 
-/* Publication Feature Image */
-.pub-feature-img {
+/* Publications Header Image */
+.pub-header-img {
   width: 100%;
-  max-height: 300px;
+  height: 250px;
   object-fit: cover;
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.1);
@@ -228,7 +227,7 @@ img { max-width: 100%; display: block; }
           </div>
         </div>
         <div class="hero-art">
-          <img src="EL.PNG" alt="Equilibrium Ledger Hero Art">
+          <img src="EL.PNG" alt="Equilibrium Ledger Hero">
         </div>
       </div>
     </div>
@@ -297,10 +296,8 @@ img { max-width: 100%; display: block; }
       <h2>Podcast</h2>
       <p class="hint">Permission to Think, short form audio artefacts</p>
     </div>
-    
     <div class="panel">
       <img class="podcast-top-sign" src="podcast_neon.png" alt="Podcast">
-
       <div class="podcast-inner">
         <div class="podcast-grid">
           <div class="podcast-left">
@@ -308,51 +305,32 @@ img { max-width: 100%; display: block; }
               <img class="podcast-logo" src="podcast_logo.png" alt="Logo">
               <img class="podcast-title-image" src="permission_to_think_title_neon.png" alt="Permission to Think">
             </div>
-
             <p class="lead" style="color:var(--muted); font-size:1.1rem; margin-bottom:20px;">
-              Short form audio essays voiced by Alex and Giulia. Each episode maps one artefact written by Alessandro Grassini Grimaldi, translated into lived navigation.
+              Short form audio essays voiced by Alex and Giulia.
             </p>
-
             <div class="grid3">
-              <div class="card"><h3>Episodes</h3><p style="font-size:0.9rem; color:var(--muted);">Micro essays and field notes.</p></div>
-              <div class="card"><h3>Formats</h3><p style="font-size:0.9rem; color:var(--muted);">Audio and transcripts.</p></div>
-              <div class="card"><h3>Distribution</h3><p style="font-size:0.9rem; color:var(--muted);">Spotify and YouTube.</p></div>
+              <div class="card"><h3>Episodes</h3><p style="font-size:0.9rem; color:var(--muted);">Micro essays.</p></div>
+              <div class="card"><h3>Formats</h3><p style="font-size:0.9rem; color:var(--muted);">Audio/Text.</p></div>
+              <div class="card"><h3>Distribution</h3><p style="font-size:0.9rem; color:var(--muted);">Spotify.</p></div>
             </div>
-
             <div class="episode-list">
               <div class="episode">
                 <img src="podcast_logo.png" alt="">
-                <div>
-                  <p class="t">Episode 1, Title to be announced</p>
-                  <p class="s">4 to 5 minutes, Article</p>
-                </div>
+                <div><p class="t">Episode 1</p><p class="s">Article</p></div>
               </div>
               <div class="episode">
                 <img src="podcast_logo.png" alt="">
-                <div>
-                  <p class="t">Episode 2, Title to be announced</p>
-                  <p class="s">4 to 5 minutes, Proposal</p>
-                </div>
-              </div>
-              <div class="episode">
-                <img src="podcast_logo.png" alt="">
-                <div>
-                  <p class="t">Episode 3, Title to be announced</p>
-                  <p class="s">4 to 5 minutes, Manuscript</p>
-                </div>
+                <div><p class="t">Episode 2</p><p class="s">Proposal</p></div>
               </div>
             </div>
-
             <div class="pillrow">
               <a class="pill" href="#">Spotify</a>
               <a class="pill" href="#">YouTube</a>
             </div>
           </div>
-
           <div class="podcast-right">
             <figure>
               <img src="podcast_studio.png" style="border-radius:20px; width:100%; border:1px solid rgba(255,255,255,0.1);" alt="Studio">
-              <figcaption style="font-size:0.8rem; color:var(--muted); margin-top:10px;">Synthetic studio image. Alex and Giulia are voiced characters.</figcaption>
             </figure>
           </div>
         </div>
@@ -368,8 +346,7 @@ img { max-width: 100%; display: block; }
       <p class="hint">Selected outputs and working papers</p>
     </div>
     <div class="panel">
-      <img src="EL1.PNG" class="pub-feature-img" alt="Publications Feature">
-      
+      <img src="EL1.PNG" class="pub-header-img" alt="Publications Header">
       <div class="grid3">
         <div class="card">
           <h3>Copy and Paste Society</h3>
@@ -377,13 +354,13 @@ img { max-width: 100%; display: block; }
           <div class="btnrow"><a class="btn" href="Copy_and_Paste_Society.pdf" target="_blank">Open PDF</a></div>
         </div>
         <div class="card">
-          <h3>Neurodivergence and vertical time</h3>
-          <p style="color:var(--muted);">Notes, models, and formalised patterns as usable architecture.</p>
+          <h3>Neurodivergence</h3>
+          <p style="color:var(--muted);">Notes, models, and formalised patterns.</p>
           <div class="btnrow"><a class="btn" href="Neurodivergence_Vertical_Time.pdf" target="_blank">Open PDF</a></div>
         </div>
         <div class="card">
-          <h3>Ethics and governance</h3>
-          <p style="color:var(--muted);">Institutional design, accountability layers, and applied ethics.</p>
+          <h3>Ethics</h3>
+          <p style="color:var(--muted);">Institutional design and ethics.</p>
           <div class="btnrow"><a class="btn" href="Ethics_and_Governance.pdf" target="_blank">Open PDF</a></div>
         </div>
       </div>
@@ -435,15 +412,15 @@ img { max-width: 100%; display: block; }
         <div>
           <h2>Giulia Trust</h2>
           <p class="lead" style="color:var(--text); font-size:1.1rem;">
-            Founded by Alessandro in honour of his mother, Giulia. The trust centres neurodivergent people and their families.
+            Founded by Alessandro in honour of his mother, Giulia.
           </p>
           <div class="grid3" style="margin-top:20px;">
-            <div class="card"><h3>Navigation clinic</h3><p style="font-size:0.85rem; color:var(--muted);">One to one guidance.</p></div>
-            <div class="card"><h3>Documentation</h3><p style="font-size:0.85rem; color:var(--muted);">Plain language templates.</p></div>
-            <div class="card"><h3>Training</h3><p style="font-size:0.85rem; color:var(--muted);">Institutional briefings.</p></div>
+            <div class="card"><h3>Navigation</h3><p style="font-size:0.85rem; color:var(--muted);">Guidance.</p></div>
+            <div class="card"><h3>Documentation</h3><p style="font-size:0.85rem; color:var(--muted);">Templates.</p></div>
+            <div class="card"><h3>Training</h3><p style="font-size:0.85rem; color:var(--muted);">Briefings.</p></div>
           </div>
         </div>
-        <div class="giulia-media">
+        <div class="giulia-stack">
           <img src="EL2.PNG" alt="Giulia Trust Feature 1">
           <img src="EL3.PNG" alt="Giulia Trust Feature 2">
         </div>
@@ -454,14 +431,10 @@ img { max-width: 100%; display: block; }
 
 <footer id="contact" class="footer">
   <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
-      <div>
-        <div style="font-weight:700; font-size:1.2rem; margin-bottom:5px;">Alessandro Grassini Grimaldi</div>
-        <div style="color:var(--muted);">info@giuliatrust.org</div>
-      </div>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-weight:700;">Alessandro Grassini Grimaldi</div>
       <div style="display:flex; gap:15px;">
         <a href="#ledger-framework">Framework</a>
-        <a href="#publications">Publications</a>
         <a href="https://zenodo.org/">Zenodo</a>
       </div>
     </div>
